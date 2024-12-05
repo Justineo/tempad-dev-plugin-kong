@@ -9,9 +9,9 @@ type ButtonProperties = {
   'Label': string
   'Position'?: string
   'Icon'?: DesignComponent
-  'Icon Danger'?: DesignComponent
-  'Icon Left'?: DesignComponent
-  'Icon Right'?: DesignComponent
+  'Icon danger'?: DesignComponent
+  'Icon left'?: DesignComponent
+  'Icon right'?: DesignComponent
 }
 
 function renderIcon(icon: DesignComponent): DevComponent {
@@ -26,9 +26,9 @@ export function Button(component: DesignComponent): DevComponent {
     Label,
     Position,
     Icon,
-    'Icon Danger': IconDanger,
-    'Icon Left': IconLeft,
-    'Icon Right': IconRight,
+    'Icon danger': IconDanger,
+    'Icon left': IconLeft,
+    'Icon right': IconRight,
   } = component.properties as ButtonProperties
 
   const appearance = ({
