@@ -15,7 +15,7 @@ type ButtonProperties = {
 }
 
 function renderIcon(icon: DesignComponent): DevComponent {
-  return h(toPascalCase(icon.name))
+  return h(`${toPascalCase(icon.name)}Icon`)
 }
 
 export function Button(component: DesignComponent): DevComponent {
@@ -70,5 +70,6 @@ export function Button(component: DesignComponent): DevComponent {
     appearance,
     size,
     disabled,
+    onClick: true,
   }, children)
 }
