@@ -5,6 +5,7 @@
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
+    "typeRoots": ["node_modules/@types", "node_modules/@figma"],
     "strict": true,
     "strictNullChecks": true,
     "noEmit": true,

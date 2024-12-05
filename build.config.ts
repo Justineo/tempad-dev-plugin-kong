@@ -1,12 +1,17 @@
 import { defineBuildConfig } from 'unbuild'
 
-export default defineBuildConfig({
-  entries: [
-    'src/index',
-  ],
-  declaration: true,
+const entries = [
+  'src/kong',
+  'src/kong-advanced',
+]
+
+export default defineBuildConfig(entries.map(entry => ({
+  entries: [entry],
   clean: true,
   rollup: {
-    emitCJS: true,
+    inlineDependencies: true,
+    esbuild: {
+      minify: true,
+    },
   },
-})
+})))

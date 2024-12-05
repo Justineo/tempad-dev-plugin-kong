@@ -2,9 +2,10 @@
   "name": "tempad-dev-plugin-kong",
   "type": "module",
   "version": "0.0.0",
-  "packageManager": "pnpm@9.9.0",
+  "private": true,
+  "packageManager": "pnpm@9.14.0",
   "description": "Kong UI plugins for TemPad Dev.",
-  "author": "Anthony Fu <anthonyfu117@hotmail.com>",
+  "author": "Justineo <justice360@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/Justineo/tempad-dev-plugin-kong#readme",
   "repository": {
@@ -14,35 +15,10 @@
   "bugs": "https://github.com/Justineo/tempad-dev-plugin-kong/issues",
   "keywords": [],
   "sideEffects": false,
-  "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
-  },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "*": [
-        "./dist/*",
-        "./dist/index.d.ts"
-      ]
-    }
-  },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint .",
-    "prepublishOnly": "nr build",
-    "release": "bumpp && npm publish",
-    "start": "esno src/index.ts",
-    "test": "vitest",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
   },
@@ -50,17 +26,16 @@
     "@antfu/eslint-config": "^3.9.2",
     "@antfu/ni": "^0.23.1",
     "@antfu/utils": "^0.7.10",
+    "@figma/plugin-typings": "^1.103.0",
+    "@tempad-dev/plugins": "^0.2.1",
     "@types/node": "^22.9.3",
-    "bumpp": "^9.8.1",
     "eslint": "^9.15.0",
-    "esno": "^4.8.0",
     "lint-staged": "^15.2.10",
     "pnpm": "^9.14.2",
     "simple-git-hooks": "^2.11.1",
     "typescript": "^5.7.2",
     "unbuild": "^2.0.0",
-    "vite": "^5.4.11",
-    "vitest": "^2.1.5"
+    "vite": "^5.4.11"
   },
   "simple-git-hooks": {
     "pre-commit": "pnpm lint-staged"
