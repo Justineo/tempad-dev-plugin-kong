@@ -1,5 +1,5 @@
 import { definePlugin } from '@tempad-dev/plugins'
-import { transformComponent } from './kongponents/components'
+import { transformComponent } from './kongponents'
 import { toConstantCase } from './utils'
 
 export const plugin = definePlugin({
