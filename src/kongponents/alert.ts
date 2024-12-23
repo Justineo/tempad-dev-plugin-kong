@@ -1,5 +1,5 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import { h } from '@tempad-dev/plugins'
+import type { DesignComponent, DevComponent, TextNode } from '@tempad-dev/plugins'
+import { findOne, h } from '@tempad-dev/plugins'
 
 type AlertProperties = {
   'Appearance': string
@@ -30,10 +30,13 @@ export function Alert(component: DesignComponent): DevComponent {
   const dismissible = ShowClose ? true : undefined
   const onDismiss = ShowClose ? true : undefined
 
+  const desc = findOne<TextNode>(component, { type: 'TEXT', name: 'desc' })
+
   return h('Alert', {
     appearance,
     showIcon,
     title,
+    message: desc?.characters,
     dismissible,
     onDismiss,
   })
