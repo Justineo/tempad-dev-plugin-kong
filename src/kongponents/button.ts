@@ -1,6 +1,6 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { h } from '@tempad-dev/plugins'
-import { toPascalCase } from '../utils'
+import { renderIcon } from '../utils'
 
 type ButtonProperties = {
   'Appearance': string
@@ -12,10 +12,6 @@ type ButtonProperties = {
   'Icon danger'?: DesignComponent
   'Icon left'?: DesignComponent
   'Icon right'?: DesignComponent
-}
-
-function renderIcon(icon: DesignComponent): DevComponent {
-  return h(`${toPascalCase(icon.name)}Icon`)
 }
 
 export function Button(component: DesignComponent): DevComponent {
