@@ -45,7 +45,7 @@ type MethodBadgeProperties = {
 export function MethodBadge(component: DesignComponent): DevComponent {
   const { Method } = component.properties as MethodBadgeProperties
 
-  const method = ({
+  const appearance = ({
     Get: 'get',
     Post: 'post',
     Put: 'put',
@@ -59,6 +59,6 @@ export function MethodBadge(component: DesignComponent): DevComponent {
   })[Method]
 
   return h('Badge', {
-    appearance: method,
-  }, method ? [method] : [])
+    appearance,
+  }, Method ? [Method] : [])
 }
