@@ -6,12 +6,12 @@ import { Button } from './button'
 type RenderFn = (component: DesignComponent) => DevComponent
 
 const componentMap: Record<string, RenderFn> = {
-  Button,
-  'Icon Button': Button,
-  'Icon Only': Button,
   Alert,
   Badge,
   'Method Badge': MethodBadge,
+  Button,
+  'Icon Button': Button,
+  'Icon Only': Button,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({ component }) => {
