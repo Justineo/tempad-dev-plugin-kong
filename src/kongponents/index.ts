@@ -23,7 +23,7 @@ const componentMap: Record<string, RenderFn> = {
   'Icon Only': Button,
   Card,
   Checkbox,
-  CodeBlock,
+  'Code Block': CodeBlock,
   'Code Line': CodeLine,
 }
 
