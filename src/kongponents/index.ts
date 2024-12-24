@@ -5,6 +5,7 @@ import type {
 } from '@tempad-dev/plugins'
 import { Alert } from './alert'
 import { Badge, MethodBadge } from './badge'
+import { Breadcrumbs } from './breadcrumbs'
 import { Button } from './button'
 
 type RenderFn = (component: DesignComponent) => DevComponent
@@ -16,6 +17,7 @@ const componentMap: Record<string, RenderFn> = {
   Button,
   'Icon Button': Button,
   'Icon Only': Button,
+  Breadcrumbs,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
