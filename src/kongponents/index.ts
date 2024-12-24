@@ -17,7 +17,7 @@ const componentMap: Record<string, RenderFn> = {
   Button,
   'Icon Button': Button,
   'Icon Only': Button,
-  Breadcrumbs,
+  'Global Breadcrumb': Breadcrumbs,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
