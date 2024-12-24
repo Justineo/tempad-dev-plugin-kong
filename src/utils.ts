@@ -20,3 +20,9 @@ export function toConstantCase(name: string): string {
 export function renderIcon(icon: DesignComponent): DevComponent {
   return h(`${toPascalCase(icon.name)}Icon`)
 }
+
+// 'Text colors/Decorative/text-decorative-aqua' -> text-decorative-aqua
+export function getTokenBaseName(token: string): string {
+  const segments = token.split('/')
+  return segments[segments.length - 1]
+}
