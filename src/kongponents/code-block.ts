@@ -1,8 +1,6 @@
 import type {
   DesignComponent,
   DevComponent,
-  FrameNode,
-  TextNode,
 } from '@tempad-dev/plugins'
 import { findOne, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
@@ -19,10 +17,15 @@ type CodeLineProperties = {
   Theme: string
 }
 
+type SecondaryButtonProperties = {
+  'Icon left': DesignComponent
+  'Label': string
+}
+
 export function CodeBlock(component: DesignComponent): DevComponent {
   const {
     Theme,
-    'Show functions': searchable,
+    'Show functions': ShowFunctions,
     'Show copy': ShowCopy,
     'Show alt action': ShowAltAction,
   } = component.properties as CodeBlockProperties
@@ -32,24 +35,29 @@ export function CodeBlock(component: DesignComponent): DevComponent {
     Dark: 'dark',
   }[Theme]
 
+  const searchable = ShowFunctions ? true : undefined
+  const showCopyButton = ShowCopy === false ? false : undefined
+
   let secondary: DevComponent | undefined
-  const iconButton = findOne<FrameNode>(component, {
+  let isCopy: boolean = false
+  const iconButton = findOne<DesignComponent>(component, {
     type: 'INSTANCE',
     name: 'Icon Button',
   })
   if (ShowAltAction && iconButton) {
-    const icon = findOne<DesignComponent>(iconButton, {
-      type: 'INSTANCE',
-      name: 'Icon',
-    })
-    const label = findOne<TextNode>(iconButton, { type: 'TEXT', name: 'label' })
+    const { 'Icon left': icon, Label: label }
+      = iconButton.properties as SecondaryButtonProperties
+
     const secondaryChildren: (DevComponent | string)[] = []
 
     if (icon) {
+      if (icon.name === 'copy') {
+        isCopy = true
+      }
       secondaryChildren.push(renderIcon(icon))
     }
     if (label) {
-      secondaryChildren.push(label.characters)
+      secondaryChildren.push(label)
     }
     if (secondaryChildren.length > 0) {
       secondary = h(
@@ -62,7 +70,7 @@ export function CodeBlock(component: DesignComponent): DevComponent {
             'CodeBlockIconButton',
             {
               theme,
-              copyTooltip: '...',
+              copyTooltip: isCopy ? 'Copy ...' : undefined,
               onClick: '() => {}',
             },
             secondaryChildren,
@@ -80,7 +88,7 @@ export function CodeBlock(component: DesignComponent): DevComponent {
       theme,
       'language': 'json',
       searchable,
-      'showCopyButton': ShowCopy === false ? false : undefined,
+      showCopyButton,
     },
     secondary ? [secondary] : [],
   )
