@@ -17,11 +17,11 @@ type LabelProperties = {
   'Show tooltip': boolean
 }
 
-type TooltipProperties = {
+type InfoTooltipProperties = {
   'Show tooltip': boolean
 }
 
-type InnerTooltipProperties = {
+type TooltipProperties = {
   Text: string
 }
 
@@ -45,7 +45,7 @@ export function Checkbox(component: DesignComponent): DevComponent {
   let description: string | undefined
 
   const labelAttributes: Record<string, unknown> = {}
-  const labelInstance = findChild<DesignComponent>(component, { type: 'INSTANCE', name: 'Label' })
+  const labelInstance = findOne<DesignComponent>(component, { type: 'INSTANCE', name: 'Label' })
   if (ShowLabel && labelInstance) {
     const {
       Label,
@@ -59,15 +59,15 @@ export function Checkbox(component: DesignComponent): DevComponent {
       labelAttributes.required = true
     }
 
-    const tooltip = findChild<DesignComponent>(labelInstance, { type: 'INSTANCE', name: 'Tooltip' })
-    if (ShowTooltip && tooltip) {
+    const infoTooltip = findChild<DesignComponent>(labelInstance, { type: 'INSTANCE', name: 'Info Tooltip' })
+    if (ShowTooltip && infoTooltip) {
       const {
-        'Show tooltip': ShowInnerTooltip,
-      } = tooltip.properties as TooltipProperties
+        'Show tooltip': ShowInfoTooltip,
+      } = infoTooltip.properties as InfoTooltipProperties
 
-      const innerTooltip = findChild<DesignComponent>(tooltip, { type: 'INSTANCE', name: 'Tooltip' })
-      if (ShowInnerTooltip && innerTooltip) {
-        const { Text } = innerTooltip.properties as InnerTooltipProperties
+      const tooltip = findChild<DesignComponent>(infoTooltip, { type: 'INSTANCE', name: 'Tooltip' })
+      if (ShowInfoTooltip && tooltip) {
+        const { Text } = tooltip.properties as TooltipProperties
 
         if (Text) {
           labelAttributes.info = Text
