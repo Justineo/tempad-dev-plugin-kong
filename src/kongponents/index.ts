@@ -7,6 +7,7 @@ import { Alert } from './alert'
 import { Badge, MethodBadge } from './badge'
 import { Breadcrumbs } from './breadcrumbs'
 import { Button } from './button'
+import { Checkbox } from './checkbox'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -18,6 +19,7 @@ const componentMap: Record<string, RenderFn> = {
   'Icon Button': Button,
   'Icon Only': Button,
   'Global Breadcrumb': Breadcrumbs,
+  Checkbox,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
