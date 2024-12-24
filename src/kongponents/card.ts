@@ -10,7 +10,11 @@ export function Card(component: DesignComponent): DevComponent {
 
   const desc = findOne<TextNode>(component, { type: 'TEXT', name: 'desc' })
 
-  return h('Card', {
-    title: title?.characters,
-  }, desc?.characters ? [desc.characters] : [])
+  return h(
+    'Card',
+    {
+      title: title?.characters,
+    },
+    desc?.characters ? [desc.characters] : [],
+  )
 }

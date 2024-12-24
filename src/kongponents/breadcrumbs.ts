@@ -12,22 +12,21 @@ type BreadcrumbsItemProperties = {
 export function Breadcrumbs(component: DesignComponent): DevComponent {
   const children = findChildren<DesignComponent>(component, (node) => {
     return node.type === 'INSTANCE' && node.name.startsWith('Level ')
-  })
-    .map((child, i) => {
-      const {
-        Icon,
-        'Show icon': ShowIcon,
-        Text,
-      } = child.properties as BreadcrumbsItemProperties
+  }).map((child, i) => {
+    const {
+      Icon,
+      'Show icon': ShowIcon,
+      Text,
+    } = child.properties as BreadcrumbsItemProperties
 
-      return {
-        item: {
-          text: Text || undefined,
-          key: `level-${i}`,
-        },
-        icon: ShowIcon ? Icon : undefined,
-      }
-    })
+    return {
+      item: {
+        text: Text || undefined,
+        key: `level-${i}`,
+      },
+      icon: ShowIcon ? Icon : undefined,
+    }
+  })
 
   const items = children.map(({ item }) => item)
   const icons = children

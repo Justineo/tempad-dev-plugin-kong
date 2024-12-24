@@ -1,7 +1,4 @@
-import type {
-  DesignComponent,
-  DevComponent,
-} from '@tempad-dev/plugins'
+import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findChild, findOne, h } from '@tempad-dev/plugins'
 
 type CheckboxProperties = {
@@ -45,7 +42,10 @@ export function Checkbox(component: DesignComponent): DevComponent {
   let description: string | undefined
 
   const labelAttributes: Record<string, unknown> = {}
-  const labelInstance = findOne<DesignComponent>(component, { type: 'INSTANCE', name: 'Label' })
+  const labelInstance = findOne<DesignComponent>(component, {
+    type: 'INSTANCE',
+    name: 'Label',
+  })
   if (ShowLabel && labelInstance) {
     const {
       Label,
@@ -59,15 +59,20 @@ export function Checkbox(component: DesignComponent): DevComponent {
       labelAttributes.required = true
     }
 
-    const infoTooltip = findChild<DesignComponent>(labelInstance, { type: 'INSTANCE', name: 'Info Tooltip' })
+    const infoTooltip = findChild<DesignComponent>(labelInstance, {
+      type: 'INSTANCE',
+      name: 'Info Tooltip',
+    })
     if (ShowInfoTooltip && infoTooltip) {
       labelAttributes.info = '...'
 
-      const {
-        'Show tooltip': ShowTooltip,
-      } = infoTooltip.properties as InfoTooltipProperties
+      const { 'Show tooltip': ShowTooltip }
+        = infoTooltip.properties as InfoTooltipProperties
 
-      const tooltip = findChild<DesignComponent>(infoTooltip, { type: 'INSTANCE', name: 'Tooltip' })
+      const tooltip = findChild<DesignComponent>(infoTooltip, {
+        type: 'INSTANCE',
+        name: 'Tooltip',
+      })
       if (ShowTooltip && tooltip) {
         const { Text } = tooltip.properties as TooltipProperties
 
@@ -78,7 +83,10 @@ export function Checkbox(component: DesignComponent): DevComponent {
     }
   }
 
-  const helpTextInstance = findOne<DesignComponent>(component, { type: 'INSTANCE', name: 'Parts/.Help Text' })
+  const helpTextInstance = findOne<DesignComponent>(component, {
+    type: 'INSTANCE',
+    name: 'Parts/.Help Text',
+  })
   if (ShowHelpText && helpTextInstance) {
     const { Text } = helpTextInstance.properties as HelpTextProperties
 
@@ -90,7 +98,8 @@ export function Checkbox(component: DesignComponent): DevComponent {
   return h('Checkbox', {
     'v-model': 'checked',
     label,
-    'labelAttributes': Object.keys(labelAttributes).length > 0 ? labelAttributes : undefined,
+    'labelAttributes':
+      Object.keys(labelAttributes).length > 0 ? labelAttributes : undefined,
     description,
     error,
     indeterminate,
