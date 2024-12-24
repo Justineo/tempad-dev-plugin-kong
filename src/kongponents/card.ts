@@ -12,6 +12,5 @@ export function Card(component: DesignComponent): DevComponent {
 
   return h('Card', {
     title: title?.characters,
-    description: desc?.characters,
-  })
+  }, desc?.characters ? [desc.characters] : [])
 }
