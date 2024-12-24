@@ -50,7 +50,7 @@ export function Checkbox(component: DesignComponent): DevComponent {
     const {
       Label,
       'Show required': ShowRequired,
-      'Show tooltip': ShowTooltip,
+      'Show tooltip': ShowInfoTooltip,
     } = labelInstance.properties as LabelProperties
 
     label = Label
@@ -60,13 +60,15 @@ export function Checkbox(component: DesignComponent): DevComponent {
     }
 
     const infoTooltip = findChild<DesignComponent>(labelInstance, { type: 'INSTANCE', name: 'Info Tooltip' })
-    if (ShowTooltip && infoTooltip) {
+    if (ShowInfoTooltip && infoTooltip) {
+      labelAttributes.info = '...'
+
       const {
-        'Show tooltip': ShowInfoTooltip,
+        'Show tooltip': ShowTooltip,
       } = infoTooltip.properties as InfoTooltipProperties
 
       const tooltip = findChild<DesignComponent>(infoTooltip, { type: 'INSTANCE', name: 'Tooltip' })
-      if (ShowInfoTooltip && tooltip) {
+      if (ShowTooltip && tooltip) {
         const { Text } = tooltip.properties as TooltipProperties
 
         if (Text) {
@@ -86,8 +88,9 @@ export function Checkbox(component: DesignComponent): DevComponent {
   }
 
   return h('Checkbox', {
+    'v-model': 'checked',
     label,
-    labelAttributes: Object.keys(labelAttributes).length > 0 ? labelAttributes : undefined,
+    'labelAttributes': Object.keys(labelAttributes).length > 0 ? labelAttributes : undefined,
     description,
     error,
     indeterminate,
