@@ -9,6 +9,7 @@ import { Breadcrumbs } from './breadcrumbs'
 import { Button } from './button'
 import { Card } from './card'
 import { Checkbox } from './checkbox'
+import { CodeBlock, CodeLine } from './code-block'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -22,6 +23,8 @@ const componentMap: Record<string, RenderFn> = {
   'Icon Only': Button,
   Card,
   Checkbox,
+  CodeBlock,
+  'Code Line': CodeLine,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
