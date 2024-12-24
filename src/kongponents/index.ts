@@ -1,4 +1,8 @@
-import type { DesignComponent, DevComponent, TransformOptions } from '@tempad-dev/plugins'
+import type {
+  DesignComponent,
+  DevComponent,
+  TransformOptions,
+} from '@tempad-dev/plugins'
 import { Alert } from './alert'
 import { Badge, MethodBadge } from './badge'
 import { Button } from './button'
@@ -14,7 +18,9 @@ const componentMap: Record<string, RenderFn> = {
   'Icon Only': Button,
 }
 
-export const transformComponent: TransformOptions['transformComponent'] = ({ component }) => {
+export const transformComponent: TransformOptions['transformComponent'] = ({
+  component,
+}) => {
   const render = componentMap[component.name]
   return render ? render(component) : ''
 }

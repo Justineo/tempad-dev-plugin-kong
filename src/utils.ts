@@ -1,4 +1,5 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import tokens from '@kong/design-tokens/tokens/js/tokens.json'
 import { h } from '@tempad-dev/plugins'
 
 export function toUpperFirst(name: string): string {
@@ -21,8 +22,18 @@ export function renderIcon(icon: DesignComponent): DevComponent {
   return h(`${toPascalCase(icon.name)}Icon`)
 }
 
-// 'Text colors/Decorative/text-decorative-aqua' -> text-decorative-aqua
-export function getTokenBaseName(token: string): string {
-  const segments = token.split('/')
-  return segments[segments.length - 1]
+const tokenSet = new Set(
+  Object.keys(tokens).map(key => key.substring(4).replaceAll('_', '-')),
+)
+
+export function getTokenName(token: string): string | null {
+  const parts = token.split('-')
+  while (parts.length) {
+    const name = parts.join('-')
+    if (tokenSet.has(name)) {
+      return name
+    }
+    parts.shift()
+  }
+  return null
 }

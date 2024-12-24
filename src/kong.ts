@@ -1,6 +1,6 @@
 import { definePlugin } from '@tempad-dev/plugins'
 import { transformComponent } from './kongponents'
-import { getTokenBaseName, toConstantCase } from './utils'
+import { getTokenName, toConstantCase } from './utils'
 
 export const plugin = definePlugin({
   name: 'Kong UI',
@@ -13,15 +13,23 @@ export const plugin = definePlugin({
     css: {
       title: 'SCSS',
       lang: 'scss',
-      transformVariable({ name }) {
-        const baseName = getTokenBaseName(name)
-        return `$kui-${baseName.toLowerCase()}`
+      transformVariable({ name, value }) {
+        const tokenName = getTokenName(name)
+        return tokenName
+          ? `$kui-${tokenName.toLowerCase()}`
+          : value
+            ? `var(--${name}, ${value})`
+            : `var(--${name})`
       },
     },
     js: {
-      transformVariable({ name }) {
-        const baseName = getTokenBaseName(name)
-        return `\0KUI_${toConstantCase(baseName)}\0`
+      transformVariable({ name, value }) {
+        const tokenName = getTokenName(name)
+        return tokenName
+          ? `\0KUI_${toConstantCase(tokenName)}\0`
+          : value
+            ? `var(--${name}, ${value})`
+            : `var(--${name})`
       },
     },
   },

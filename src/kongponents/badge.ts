@@ -20,14 +20,14 @@ export function Badge(component: DesignComponent): DevComponent {
     'Icon right': IconRight,
     Label,
   } = component.properties as BadgeProperties
-  const appearance = ({
+  const appearance = {
     Info: undefined, // default
     Success: 'success',
     Warning: 'warning',
     Danger: 'danger',
     Neutral: 'neutral',
     Decorative: 'decorative',
-  })[Appearance]
+  }[Appearance]
 
   const iconBefore = ShowIconRight && !ShowIconLeft ? false : undefined
   const Icon = ShowIconLeft ? IconLeft : ShowIconRight ? IconRight : undefined
@@ -45,7 +45,7 @@ type MethodBadgeProperties = {
 export function MethodBadge(component: DesignComponent): DevComponent {
   const { Method } = component.properties as MethodBadgeProperties
 
-  const appearance = ({
+  const appearance = {
     Get: 'get',
     Post: 'post',
     Put: 'put',
@@ -56,9 +56,13 @@ export function MethodBadge(component: DesignComponent): DevComponent {
     Connect: 'connect',
     Trace: 'trace',
     Custom: 'custom',
-  })[Method]
+  }[Method]
 
-  return h('Badge', {
-    appearance,
-  }, Method ? [Method] : [])
+  return h(
+    'Badge',
+    {
+      appearance,
+    },
+    Method ? [Method] : [],
+  )
 }

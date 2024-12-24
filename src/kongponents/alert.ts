@@ -1,4 +1,8 @@
-import type { DesignComponent, DevComponent, TextNode } from '@tempad-dev/plugins'
+import type {
+  DesignComponent,
+  DevComponent,
+  TextNode,
+} from '@tempad-dev/plugins'
 import { findOne, h } from '@tempad-dev/plugins'
 
 type AlertProperties = {
@@ -18,12 +22,12 @@ export function Alert(component: DesignComponent): DevComponent {
     'Show close': ShowClose,
   } = component.properties as AlertProperties
 
-  const appearance = ({
+  const appearance = {
     Info: undefined, // default
     Success: 'success',
     Warning: 'warning',
     Danger: 'danger',
-  })[Appearance]
+  }[Appearance]
 
   const showIcon = ShowIcon ? true : undefined
   const title = ShowTitle ? Title : undefined

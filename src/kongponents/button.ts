@@ -27,23 +27,23 @@ export function Button(component: DesignComponent): DevComponent {
     'Icon right': IconRight,
   } = component.properties as ButtonProperties
 
-  const appearance = ({
+  const appearance = {
     Primary: undefined, // default
     Secondary: 'secondary',
     Tertiary: 'tertiary',
     Danger: 'danger',
-  })[Appearance]
+  }[Appearance]
 
-  const size = ({
+  const size = {
     Small: 'small',
     Medium: undefined, // default
     Large: 'large',
-  })[Size]
+  }[Size]
 
-  const disabled = ({
+  const disabled = {
     Disabled: true,
     Default: undefined, // default
-  })[State]
+  }[State]
 
   let children: DevComponent['children'] = []
 
@@ -52,7 +52,10 @@ export function Button(component: DesignComponent): DevComponent {
   }
   else if (component.name === 'Icon Button') {
     if (Position === 'Left') {
-      children = [renderIcon(Appearance === 'Danger' ? IconDanger! : IconLeft!), Label]
+      children = [
+        renderIcon(Appearance === 'Danger' ? IconDanger! : IconLeft!),
+        Label,
+      ]
     }
     else if (Position === 'Right') {
       children = [Label, renderIcon(IconRight!)]
@@ -62,10 +65,14 @@ export function Button(component: DesignComponent): DevComponent {
     children = [renderIcon(Appearance === 'Danger' ? IconDanger! : Icon!)]
   }
 
-  return h('Button', {
-    appearance,
-    size,
-    disabled,
-    onClick: true,
-  }, children)
+  return h(
+    'Button',
+    {
+      appearance,
+      size,
+      disabled,
+      onClick: true,
+    },
+    children,
+  )
 }
