@@ -2,10 +2,6 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findChildren, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
-type BreadcrumbsProperties = {
-  Levels: string
-}
-
 type BreadcrumbsItemProperties = {
   'Icon': DesignComponent
   'Selected': boolean
@@ -14,14 +10,9 @@ type BreadcrumbsItemProperties = {
 }
 
 export function Breadcrumbs(component: DesignComponent): DevComponent {
-  const { Levels } = component.properties as BreadcrumbsProperties
-
-  const levels = Number.parseInt(Levels, 10)
-
-  const children = findChildren<DesignComponent>(component, {
-    type: 'INSTANCE',
+  const children = findChildren<DesignComponent>(component, (node) => {
+    return node.type === 'INSTANCE' && node.name.startsWith('Level ')
   })
-    .slice(0, levels)
     .map((child, i) => {
       const {
         Icon,
