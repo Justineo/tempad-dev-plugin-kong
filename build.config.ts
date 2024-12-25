@@ -3,7 +3,7 @@ import { defineBuildConfig } from 'unbuild'
 const entries = ['src/kong', 'src/kong-advanced']
 
 export default defineBuildConfig(
-  entries.map(entry => ({
+  entries.map((entry) => ({
     entries: [entry],
     clean: true,
     rollup: {

@@ -5,9 +5,9 @@ import { Button } from './button'
 
 type EmptyStateProperties = {
   'Show icon': boolean
-  'Icon'?: DesignComponent
-  'Title': string
-  'Description': string
+  Icon?: DesignComponent
+  Title: string
+  Description: string
   'Show button': boolean
 }
 
@@ -30,16 +30,18 @@ export function EmptyState(component: DesignComponent): DevComponent {
     type: 'INSTANCE',
     name: 'Button',
   })
-  const { Appearance, Label, State } = button?.properties as ButtonProperties
 
   const title = Title || undefined
   const message = Description || undefined
 
+  const { Appearance, Label, State } = button
+    ? (button.properties as ButtonProperties)
+    : {}
   const useBuiltInButton = ShowButton && button && Appearance === 'Primary'
   const actionButtonText = useBuiltInButton ? Label : undefined
   const actionButtonVisible = useBuiltInButton ? undefined : false
-  const actionButtonDisabled
-    = useBuiltInButton && State === 'Disabled' ? true : undefined
+  const actionButtonDisabled =
+    useBuiltInButton && State === 'Disabled' ? true : undefined
 
   let iconVariant: string | undefined
   let icon: DesignComponent | undefined
@@ -55,8 +57,7 @@ export function EmptyState(component: DesignComponent): DevComponent {
       if (iconVariant === 'default') {
         iconVariant = undefined
       }
-    }
-    else {
+    } else {
       icon = Icon
     }
   }
@@ -70,9 +71,9 @@ export function EmptyState(component: DesignComponent): DevComponent {
   if (ShowButton && !useBuiltInButton) {
     const buttons = findChildren<DesignComponent>(
       component,
-      node =>
-        node.type === 'INSTANCE'
-        && ['Icon Only', 'Icon Button', 'Button'].includes(node.name),
+      (node) =>
+        node.type === 'INSTANCE' &&
+        ['Icon Only', 'Icon Button', 'Button'].includes(node.name),
     )
 
     if (buttons) {

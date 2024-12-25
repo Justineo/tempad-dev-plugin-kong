@@ -3,12 +3,12 @@ import { h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
 type ButtonProperties = {
-  'Appearance': string
-  'Size': string
-  'State': string
-  'Label': string
-  'Position'?: string
-  'Icon'?: DesignComponent
+  Appearance: string
+  Size: string
+  State: string
+  Label: string
+  Position?: string
+  Icon?: DesignComponent
   'Icon danger'?: DesignComponent
   'Icon left'?: DesignComponent
   'Icon right'?: DesignComponent
@@ -49,19 +49,16 @@ export function Button(component: DesignComponent): DevComponent {
 
   if (component.name === 'Button') {
     children = [Label]
-  }
-  else if (component.name === 'Icon Button') {
+  } else if (component.name === 'Icon Button') {
     if (Position === 'Left') {
       children = [
         renderIcon(Appearance === 'Danger' ? IconDanger! : IconLeft!),
         Label,
       ]
-    }
-    else if (Position === 'Right') {
+    } else if (Position === 'Right') {
       children = [Label, renderIcon(IconRight!)]
     }
-  }
-  else if (component.name === 'Icon Only') {
+  } else if (component.name === 'Icon Only') {
     children = [renderIcon(Appearance === 'Danger' ? IconDanger! : Icon!)]
   }
 

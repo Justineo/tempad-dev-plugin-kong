@@ -6,10 +6,10 @@ import type {
 import { findOne, h } from '@tempad-dev/plugins'
 
 type AlertProperties = {
-  'Appearance': string
+  Appearance: string
   'Show icon': boolean
   'Show title': boolean
-  'Title'?: string
+  Title?: string
   'Show close'?: boolean
 }
 

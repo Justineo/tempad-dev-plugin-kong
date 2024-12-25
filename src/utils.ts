@@ -23,7 +23,7 @@ export function renderIcon(icon: DesignComponent): DevComponent {
 }
 
 const tokenSet = new Set(
-  Object.keys(tokens).map(key => key.substring(4).replaceAll('_', '-')),
+  Object.keys(tokens).map((key) => key.substring(4).replaceAll('_', '-')),
 )
 
 export function getTokenName(token: string): string | null {

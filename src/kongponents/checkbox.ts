@@ -2,14 +2,14 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findChild, findOne, h } from '@tempad-dev/plugins'
 
 type CheckboxProperties = {
-  'State': string
-  'Type': string
+  State: string
+  Type: string
   'Show label': boolean
   'Show help text': boolean
 }
 
 type LabelProperties = {
-  'Label': string
+  Label: string
   'Show required': boolean
   'Show tooltip': boolean
 }
@@ -66,8 +66,8 @@ export function Checkbox(component: DesignComponent): DevComponent {
     if (ShowInfoTooltip && infoTooltip) {
       labelAttributes.info = '...'
 
-      const { 'Show tooltip': ShowTooltip }
-        = infoTooltip.properties as InfoTooltipProperties
+      const { 'Show tooltip': ShowTooltip } =
+        infoTooltip.properties as InfoTooltipProperties
 
       const tooltip = findChild<DesignComponent>(infoTooltip, {
         type: 'INSTANCE',
@@ -98,7 +98,7 @@ export function Checkbox(component: DesignComponent): DevComponent {
   return h('KCheckbox', {
     'v-model': 'checked',
     label,
-    'labelAttributes':
+    labelAttributes:
       Object.keys(labelAttributes).length > 0 ? labelAttributes : undefined,
     description,
     error,

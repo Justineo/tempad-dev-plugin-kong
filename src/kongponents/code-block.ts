@@ -3,7 +3,7 @@ import { findOne, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
 type CodeBlockProperties = {
-  'Theme': string
+  Theme: string
   'Show functions': boolean
   'Show method': boolean
   'Show copy': boolean
@@ -16,7 +16,7 @@ type CodeLineProperties = {
 
 type SecondaryButtonProperties = {
   'Icon left': DesignComponent
-  'Label': string
+  Label: string
 }
 
 export function CodeBlock(component: DesignComponent): DevComponent {
@@ -42,8 +42,8 @@ export function CodeBlock(component: DesignComponent): DevComponent {
     name: 'Icon Button',
   })
   if (ShowAltAction && iconButton) {
-    const { 'Icon left': icon, Label: label }
-      = iconButton.properties as SecondaryButtonProperties
+    const { 'Icon left': icon, Label: label } =
+      iconButton.properties as SecondaryButtonProperties
 
     const secondaryChildren: (DevComponent | string)[] = []
 
@@ -80,10 +80,10 @@ export function CodeBlock(component: DesignComponent): DevComponent {
   return h(
     'KCodeBlock',
     {
-      'id': '...',
+      id: '...',
       ':code': 'code',
       theme,
-      'language': 'json',
+      language: 'json',
       searchable,
       showCopyButton,
     },
@@ -102,6 +102,6 @@ export function CodeLine(component: DesignComponent): DevComponent {
   return h('CodeBlock', {
     ':code': 'code',
     theme,
-    'singleLine': true,
+    singleLine: true,
   })
 }

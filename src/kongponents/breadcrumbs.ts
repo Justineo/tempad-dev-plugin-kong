@@ -3,10 +3,10 @@ import { findChildren, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
 type BreadcrumbsItemProperties = {
-  'Icon': DesignComponent
-  'Selected': boolean
+  Icon: DesignComponent
+  Selected: boolean
   'Show icon': boolean
-  'Text': string
+  Text: string
 }
 
 export function Breadcrumbs(component: DesignComponent): DevComponent {
@@ -37,7 +37,7 @@ export function Breadcrumbs(component: DesignComponent): DevComponent {
 
       return h('template', { [`#icon-level-${i}`]: true }, [renderIcon(icon)])
     })
-    .filter(t => t != null)
+    .filter((t) => t != null)
 
   return h(
     'KBreadcrumbs',

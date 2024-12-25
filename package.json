@@ -19,6 +19,8 @@
     "build": "unbuild",
     "dev": "unbuild --stub",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --write",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks"
   },
@@ -40,9 +42,12 @@
     "vite": "^5.4.11"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged"
+    "pre-commit": "pnpm lint-staged && pnpm build"
   },
   "lint-staged": {
-    "*": "eslint --fix"
+    "*": [
+      "pnpm lint:fix",
+      "pnpm format"
+    ]
   }
 }

@@ -3,12 +3,12 @@ import { h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
 type BadgeProperties = {
-  'Appearance': string
+  Appearance: string
   'Show icon left': boolean
   'Icon left'?: DesignComponent
   'Show icon right': boolean
   'Icon right'?: DesignComponent
-  'Label': string
+  Label: string
 }
 
 export function Badge(component: DesignComponent): DevComponent {
