@@ -18,15 +18,15 @@ type RenderFn = (component: DesignComponent) => DevComponent
 const componentMap: Record<string, RenderFn> = {
   Alert,
   Badge,
-  'Method Badge': MethodBadge,
-  'Global Breadcrumb': Breadcrumbs,
+  MethodBadge,
+  GlobalBreadcrumb: Breadcrumbs,
   Button,
-  'Icon Button': Button,
-  'Icon Only': Button,
+  IconButton: Button,
+  IconOnly: Button,
   Card,
   Checkbox,
-  'Code Block': CodeBlock,
-  'Code Line': CodeLine,
+  CodeBlock,
+  CodeLine,
   Collapse,
   EmptyState,
 }
@@ -34,6 +34,6 @@ const componentMap: Record<string, RenderFn> = {
 export const transformComponent: TransformOptions['transformComponent'] = ({
   component,
 }) => {
-  const render = componentMap[component.name]
+  const render = componentMap[component.name.replaceAll(' ', '')]
   return render ? render(component) : ''
 }
