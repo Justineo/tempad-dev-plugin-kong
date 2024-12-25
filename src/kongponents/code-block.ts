@@ -1,7 +1,4 @@
-import type {
-  DesignComponent,
-  DevComponent,
-} from '@tempad-dev/plugins'
+import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findOne, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
@@ -70,7 +67,7 @@ export function CodeBlock(component: DesignComponent): DevComponent {
             'CodeBlockIconButton',
             {
               theme,
-              copyTooltip: isCopy ? 'Copy ...' : undefined,
+              copyTooltip: isCopy ? 'Copy...' : undefined,
               onClick: '() => {}',
             },
             secondaryChildren,
