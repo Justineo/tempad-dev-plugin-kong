@@ -66,7 +66,7 @@ export function Button(component: DesignComponent): DevComponent {
   }
 
   return h(
-    'Button',
+    'KButton',
     {
       appearance,
       size,

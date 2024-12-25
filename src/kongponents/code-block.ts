@@ -78,7 +78,7 @@ export function CodeBlock(component: DesignComponent): DevComponent {
   }
 
   return h(
-    'CodeBlock',
+    'KCodeBlock',
     {
       'id': '...',
       ':code': 'code',

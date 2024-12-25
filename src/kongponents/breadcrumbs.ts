@@ -40,7 +40,7 @@ export function Breadcrumbs(component: DesignComponent): DevComponent {
     .filter(t => t != null)
 
   return h(
-    'Breadcrumbs',
+    'KBreadcrumbs',
     {
       items,
     },

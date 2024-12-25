@@ -10,6 +10,7 @@ import { Button } from './button'
 import { Card } from './card'
 import { Checkbox } from './checkbox'
 import { CodeBlock, CodeLine } from './code-block'
+import { Collapse } from './Collapse'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -25,6 +26,7 @@ const componentMap: Record<string, RenderFn> = {
   Checkbox,
   'Code Block': CodeBlock,
   'Code Line': CodeLine,
+  Collapse,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({

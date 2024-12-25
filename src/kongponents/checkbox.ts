@@ -95,7 +95,7 @@ export function Checkbox(component: DesignComponent): DevComponent {
     }
   }
 
-  return h('Checkbox', {
+  return h('KCheckbox', {
     'v-model': 'checked',
     label,
     'labelAttributes':

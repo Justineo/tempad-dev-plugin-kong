@@ -59,7 +59,7 @@ export function MethodBadge(component: DesignComponent): DevComponent {
   }[Method]
 
   return h(
-    'Badge',
+    'KBadge',
     {
       appearance,
     },

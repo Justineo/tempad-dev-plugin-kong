@@ -36,7 +36,7 @@ export function Alert(component: DesignComponent): DevComponent {
 
   const desc = findOne<TextNode>(component, { type: 'TEXT', name: 'desc' })
 
-  return h('Alert', {
+  return h('KAlert', {
     appearance,
     showIcon,
     title,
