@@ -39,7 +39,7 @@ export function EmptyState(component: DesignComponent): DevComponent {
     : {}
   const useBuiltInButton = ShowButton && button && Appearance === 'Primary'
   const actionButtonText = useBuiltInButton ? Label : undefined
-  const actionButtonVisible = useBuiltInButton ? undefined : false
+  const actionButtonVisible = ShowButton ? undefined : false
   const actionButtonDisabled =
     useBuiltInButton && State === 'Disabled' ? true : undefined
 
