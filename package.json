@@ -42,7 +42,7 @@
     "vite": "^5.4.11"
   },
   "simple-git-hooks": {
-    "pre-commit": "pnpm lint-staged && pnpm build"
+    "pre-commit": "pnpm lint-staged && pnpm build && git add dist"
   },
   "lint-staged": {
     "*": [
