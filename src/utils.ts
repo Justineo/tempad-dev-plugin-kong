@@ -37,3 +37,25 @@ export function getTokenName(token: string): string | null {
   }
   return null
 }
+
+export function mapKey(
+  obj: Record<string, unknown>,
+  mapping: Record<string, string> | ((key: string) => string),
+): Record<string, unknown> {
+  const result: Record<string, unknown> = {}
+
+  // Determine the mapping function upfront
+  const mapFn =
+    typeof mapping === 'function'
+      ? mapping
+      : (key: string) => mapping[key] ?? key
+
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      const newKey = mapFn(key)
+      result[newKey] = obj[key]
+    }
+  }
+
+  return result
+}

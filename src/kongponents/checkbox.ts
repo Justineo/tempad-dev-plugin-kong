@@ -12,7 +12,7 @@ export function Checkbox(component: DesignComponent): DevComponent {
 
   const indeterminate = Type === 'Indeterminate' ? true : undefined
 
-  const inputFieldProps = getInputFieldProps(component)
+  const inputFieldProps = getInputFieldProps(component, { help: 'description' })
 
   return h('KCheckbox', {
     'v-model': 'checked',

@@ -1,6 +1,6 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findOne } from '@tempad-dev/plugins'
-
+import { mapKey } from '../../utils'
 import { Label } from '../label'
 
 export type InputFieldProperties = {
@@ -15,6 +15,7 @@ export type HelpTextProperties = {
 
 export function getInputFieldProps(
   component: DesignComponent,
+  keyMapping?: Parameters<typeof mapKey>[1],
 ): DevComponent['props'] {
   const {
     State,
@@ -22,7 +23,7 @@ export function getInputFieldProps(
     'Show help text': ShowHelpText,
   } = component.properties as InputFieldProperties
 
-  let description: string | undefined
+  let help: string | undefined
   let label: DevComponent | undefined
 
   const labelInstance = findOne<DesignComponent>(component, {
@@ -43,7 +44,7 @@ export function getInputFieldProps(
     const { Text } = helpTextInstance.properties as HelpTextProperties
 
     if (Text) {
-      description = Text
+      help = Text
     }
   }
 
@@ -53,11 +54,13 @@ export function getInputFieldProps(
       : undefined
     : undefined
 
-  return {
+  const props = {
     label: label ? label.children[0] : undefined,
     labelAttributes,
-    description,
+    help,
     error: State === 'Error' ? true : undefined,
     disabled: State === 'Disabled' ? true : undefined,
   }
+
+  return keyMapping ? mapKey(props, keyMapping) : props
 }
