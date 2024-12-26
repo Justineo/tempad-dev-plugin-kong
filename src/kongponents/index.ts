@@ -12,6 +12,8 @@ import { Checkbox } from './checkbox'
 import { CodeBlock, CodeLine } from './code-block'
 import { Collapse } from './collapse'
 import { EmptyState } from './empty-state'
+import { FileUpload } from './file-upload'
+import { Label } from './label'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -29,6 +31,8 @@ const componentMap: Record<string, RenderFn> = {
   CodeLine,
   Collapse,
   EmptyState,
+  FileUpload,
+  Label,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({

@@ -3,7 +3,7 @@ import { findChildren, findOne, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 import { Button } from './button'
 
-type EmptyStateProperties = {
+export type EmptyStateProperties = {
   'Show icon': boolean
   Icon?: DesignComponent
   Title: string
@@ -11,7 +11,7 @@ type EmptyStateProperties = {
   'Show button': boolean
 }
 
-type ButtonProperties = {
+export type ButtonProperties = {
   Appearance: string
   Label: string
   State: string

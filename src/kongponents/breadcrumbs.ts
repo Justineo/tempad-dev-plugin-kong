@@ -2,7 +2,7 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findChildren, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
-type BreadcrumbsItemProperties = {
+export type BreadcrumbsItemProperties = {
   Icon: DesignComponent
   Selected: boolean
   'Show icon': boolean

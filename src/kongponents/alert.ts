@@ -5,7 +5,7 @@ import type {
 } from '@tempad-dev/plugins'
 import { findOne, h } from '@tempad-dev/plugins'
 
-type AlertProperties = {
+export type AlertProperties = {
   Appearance: string
   'Show icon': boolean
   'Show title': boolean

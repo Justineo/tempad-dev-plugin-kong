@@ -2,7 +2,7 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
-type BadgeProperties = {
+export type BadgeProperties = {
   Appearance: string
   'Show icon left': boolean
   'Icon left'?: DesignComponent
@@ -38,7 +38,7 @@ export function Badge(component: DesignComponent): DevComponent {
   ])
 }
 
-type MethodBadgeProperties = {
+export type MethodBadgeProperties = {
   Method: string
 }
 

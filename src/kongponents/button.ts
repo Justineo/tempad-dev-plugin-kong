@@ -2,7 +2,7 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
-type ButtonProperties = {
+export type ButtonProperties = {
   Appearance: string
   Size: string
   State: string

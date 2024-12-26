@@ -1,108 +1,22 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import { findChild, findOne, h } from '@tempad-dev/plugins'
+import type { InputFieldProperties } from './mixins/input-field'
+import { h } from '@tempad-dev/plugins'
+import { getInputFieldProps } from './mixins/input-field'
 
-type CheckboxProperties = {
-  State: string
+export type CheckboxProperties = {
   Type: string
-  'Show label': boolean
-  'Show help text': boolean
-}
-
-type LabelProperties = {
-  Label: string
-  'Show required': boolean
-  'Show tooltip': boolean
-}
-
-type InfoTooltipProperties = {
-  'Show tooltip': boolean
-}
-
-type TooltipProperties = {
-  Text: string
-}
-
-type HelpTextProperties = {
-  Text: string
-}
+} & InputFieldProperties
 
 export function Checkbox(component: DesignComponent): DevComponent {
-  const {
-    State,
-    Type,
-    'Show label': ShowLabel,
-    'Show help text': ShowHelpText,
-  } = component.properties as CheckboxProperties
+  const { Type } = component.properties as CheckboxProperties
 
   const indeterminate = Type === 'Indeterminate' ? true : undefined
-  const disabled = State === 'Disabled' ? true : undefined
-  const error = State === 'Error' ? true : undefined
 
-  let label: string | undefined
-  let description: string | undefined
-
-  const labelAttributes: Record<string, unknown> = {}
-  const labelInstance = findOne<DesignComponent>(component, {
-    type: 'INSTANCE',
-    name: 'Label',
-  })
-  if (ShowLabel && labelInstance) {
-    const {
-      Label,
-      'Show required': ShowRequired,
-      'Show tooltip': ShowInfoTooltip,
-    } = labelInstance.properties as LabelProperties
-
-    label = Label
-
-    if (ShowRequired) {
-      labelAttributes.required = true
-    }
-
-    const infoTooltip = findChild<DesignComponent>(labelInstance, {
-      type: 'INSTANCE',
-      name: 'Info Tooltip',
-    })
-    if (ShowInfoTooltip && infoTooltip) {
-      labelAttributes.info = '...'
-
-      const { 'Show tooltip': ShowTooltip } =
-        infoTooltip.properties as InfoTooltipProperties
-
-      const tooltip = findChild<DesignComponent>(infoTooltip, {
-        type: 'INSTANCE',
-        name: 'Tooltip',
-      })
-      if (ShowTooltip && tooltip) {
-        const { Text } = tooltip.properties as TooltipProperties
-
-        if (Text) {
-          labelAttributes.info = Text
-        }
-      }
-    }
-  }
-
-  const helpTextInstance = findOne<DesignComponent>(component, {
-    type: 'INSTANCE',
-    name: 'Parts/.Help Text',
-  })
-  if (ShowHelpText && helpTextInstance) {
-    const { Text } = helpTextInstance.properties as HelpTextProperties
-
-    if (Text) {
-      description = Text
-    }
-  }
+  const inputFieldProps = getInputFieldProps(component)
 
   return h('KCheckbox', {
     'v-model': 'checked',
-    label,
-    labelAttributes:
-      Object.keys(labelAttributes).length > 0 ? labelAttributes : undefined,
-    description,
-    error,
     indeterminate,
-    disabled,
+    ...inputFieldProps,
   })
 }

@@ -2,7 +2,7 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findOne, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
-type CodeBlockProperties = {
+export type CodeBlockProperties = {
   Theme: string
   'Show functions': boolean
   'Show method': boolean
@@ -10,11 +10,11 @@ type CodeBlockProperties = {
   'Show alt action': boolean
 }
 
-type CodeLineProperties = {
+export type CodeLineProperties = {
   Theme: string
 }
 
-type SecondaryButtonProperties = {
+export type SecondaryButtonProperties = {
   'Icon left': DesignComponent
   Label: string
 }

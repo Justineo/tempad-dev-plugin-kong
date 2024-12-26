@@ -5,7 +5,7 @@ import type {
 } from '@tempad-dev/plugins'
 import { findOne, h } from '@tempad-dev/plugins'
 
-type CollapseProperties = {
+export type CollapseProperties = {
   'Show link': boolean
 }
 
