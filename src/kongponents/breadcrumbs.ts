@@ -1,6 +1,6 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findChildren, h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import { pruneUndefined, renderIcon } from '../utils'
 
 export type BreadcrumbsItemProperties = {
   Icon: DesignComponent
@@ -28,7 +28,7 @@ export function Breadcrumbs(component: DesignComponent): DevComponent {
     }
   })
 
-  const items = children.map(({ item }) => item)
+  const items = children.map(({ item }) => pruneUndefined(item))
   const icons = children
     .map(({ icon }, i) => {
       if (!icon) {

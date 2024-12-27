@@ -1,6 +1,6 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findChildren, h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import { pruneUndefined, renderIcon } from '../utils'
 
 export type DropdownOptionProperties = {
   State: string
@@ -29,13 +29,13 @@ export function Dropdown(component: DesignComponent): DevComponent {
 
     const icon = ShowLeftIcon && LeftIcon ? renderIcon(LeftIcon) : undefined
 
-    return {
+    return pruneUndefined({
       label: Label,
       selected,
       disabled,
       danger,
       icon,
-    }
+    })
   })
 
   // if any item has `icon`, we need to use `items` slot instead of the `items` prop

@@ -59,3 +59,15 @@ export function mapKey(
 
   return result
 }
+
+export function pruneUndefined<T extends Record<string, unknown>>(
+  obj: T,
+): {
+  [K in keyof T]: T[K] extends undefined
+    ? never
+    : T[K] extends object
+      ? NonNullable<T[K]>
+      : T[K]
+} {
+  return JSON.parse(JSON.stringify(obj))
+}
