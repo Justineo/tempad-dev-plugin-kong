@@ -9,7 +9,7 @@ import { renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type InputProperties = {
-  'Show value': boolean
+  'Show value': string
   Placeholder?: string
   'Show icon left': boolean
   'Icon left'?: DesignComponent
@@ -28,7 +28,8 @@ export function Input(component: DesignComponent): DevComponent {
     'Icon right': IconRight,
   } = component.properties as InputProperties
 
-  const placeholder = ShowValue ? undefined : Placeholder
+  const placeholder =
+    ShowValue === 'True' ? undefined : Placeholder || undefined
 
   const beforeSlot =
     ShowIconLeft && IconLeft
@@ -61,7 +62,7 @@ export function Input(component: DesignComponent): DevComponent {
       showPasswordMaskToggle: hasVisibilityIcon || undefined,
       placeholder,
       ...inputFieldProps,
-      readonly: State === 'Readonly',
+      readonly: State === 'Readonly' || undefined,
     },
     [beforeSlot, afterSlot].filter((t) => t != null),
   )

@@ -10,7 +10,7 @@ import { renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type FileUploadProperties = {
-  'Show value': boolean
+  'Show value': string
   Placeholder?: string
   'Show icon left': boolean
   'Icon left'?: DesignComponent
@@ -24,7 +24,7 @@ export function FileUpload(component: DesignComponent): DevComponent {
     'Icon left': IconLeft,
   } = component.properties as FileUploadProperties
 
-  const placeholder = ShowValue ? undefined : Placeholder
+  const placeholder = ShowValue === 'True' ? undefined : Placeholder
 
   const icon = ShowIconLeft && IconLeft ? renderIcon(IconLeft) : undefined
   const input = findChild<FrameNode>(component, {
