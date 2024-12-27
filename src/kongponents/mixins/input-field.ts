@@ -58,17 +58,14 @@ export function getInputFieldProps(
     }
   }
 
-  const attributes = label
-    ? Object.keys(label.props).length > 0
-      ? { ...(label.props as LabelProps) }
-      : undefined
-    : undefined
-
-  const { required, ...labelAttributes } = attributes || {}
+  const { required, ...labelAttributes } = label
+    ? (label.props as LabelProps)
+    : {}
 
   const props: InputFieldProps = {
     label: label ? (label.children[0] as string) : undefined,
-    labelAttributes,
+    labelAttributes:
+      Object.keys(labelAttributes).length > 0 ? labelAttributes : undefined,
     required,
     help,
     error: State === 'Error' ? true : undefined,

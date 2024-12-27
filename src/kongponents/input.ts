@@ -19,6 +19,7 @@ export type InputProperties = {
 
 export function Input(component: DesignComponent): DevComponent {
   const {
+    State,
     'Show value': ShowValue,
     Placeholder,
     'Show icon left': ShowIconLeft,
@@ -57,9 +58,10 @@ export function Input(component: DesignComponent): DevComponent {
     {
       'v-model': 'value',
       type,
-      showPasswordMaskToggle: hasVisibilityIcon,
+      showPasswordMaskToggle: hasVisibilityIcon || undefined,
       placeholder,
       ...inputFieldProps,
+      readonly: State === 'Readonly',
     },
     [beforeSlot, afterSlot].filter((t) => t != null),
   )
