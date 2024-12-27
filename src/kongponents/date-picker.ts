@@ -5,7 +5,7 @@ export type DateTimePickerProperties = {
   Appearance: string
 }
 
-export function DateTimePicker(component: DesignComponent): DevComponent {
+export function DatePicker(component: DesignComponent): DevComponent {
   const { Appearance } = component.properties as DateTimePickerProperties
 
   const mode = {

@@ -11,7 +11,7 @@ import { Card } from './card'
 import { Checkbox } from './checkbox'
 import { CodeBlock, CodeLine } from './code-block'
 import { Collapse } from './collapse'
-import { DateTimePicker } from './date-time-picker'
+import { DatePicker } from './date-picker'
 import { Dropdown } from './dropdown'
 import { EmptyState } from './empty-state'
 import { FileUpload } from './file-upload'
@@ -32,7 +32,7 @@ const componentMap: Record<string, RenderFn> = {
   CodeBlock,
   CodeLine,
   Collapse,
-  DateTimePicker,
+  DatePicker,
   Dropdown,
   EmptyState,
   FileUpload,
