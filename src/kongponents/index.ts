@@ -15,6 +15,7 @@ import { DatePicker } from './date-picker'
 import { Dropdown } from './dropdown'
 import { EmptyState } from './empty-state'
 import { FileUpload } from './file-upload'
+import { Input } from './input'
 import { Label } from './label'
 
 type RenderFn = (component: DesignComponent) => DevComponent
@@ -36,6 +37,7 @@ const componentMap: Record<string, RenderFn> = {
   Dropdown,
   EmptyState,
   FileUpload,
+  Input,
   Label,
 }
 

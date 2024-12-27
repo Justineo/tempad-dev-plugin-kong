@@ -1,4 +1,5 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { LabelProps } from '../label'
 import { findOne } from '@tempad-dev/plugins'
 import { mapKey } from '../../utils'
 import { Label } from '../label'
@@ -11,6 +12,15 @@ export type InputFieldProperties = {
 
 export type HelpTextProperties = {
   Text: string
+}
+
+export type InputFieldProps = {
+  label?: string
+  labelAttributes?: Record<string, unknown>
+  required?: boolean
+  help?: string
+  error?: boolean
+  disabled?: boolean
 }
 
 export function getInputFieldProps(
@@ -48,15 +58,18 @@ export function getInputFieldProps(
     }
   }
 
-  const labelAttributes = label
+  const attributes = label
     ? Object.keys(label.props).length > 0
-      ? label.props
+      ? { ...(label.props as LabelProps) }
       : undefined
     : undefined
 
-  const props = {
-    label: label ? label.children[0] : undefined,
+  const { required, ...labelAttributes } = attributes || {}
+
+  const props: InputFieldProps = {
+    label: label ? (label.children[0] as string) : undefined,
     labelAttributes,
+    required,
     help,
     error: State === 'Error' ? true : undefined,
     disabled: State === 'Disabled' ? true : undefined,

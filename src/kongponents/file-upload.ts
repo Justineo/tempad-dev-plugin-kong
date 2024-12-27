@@ -1,6 +1,11 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type {
+  DesignComponent,
+  DevComponent,
+  FrameNode,
+} from '@tempad-dev/plugins'
+import type { ButtonProperties } from './button'
 import type { InputFieldProperties } from './mixins/input-field'
-import { h } from '@tempad-dev/plugins'
+import { findChild, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
@@ -22,6 +27,16 @@ export function FileUpload(component: DesignComponent): DevComponent {
   const placeholder = ShowValue ? undefined : Placeholder
 
   const icon = ShowIconLeft && IconLeft ? renderIcon(IconLeft) : undefined
+  const input = findChild<FrameNode>(component, {
+    type: 'FRAME',
+    name: 'input',
+  })
+  const button = input
+    ? findChild<DesignComponent>(input, { type: 'INSTANCE', name: 'Button' })
+    : undefined
+  const buttonText = button
+    ? (button.properties as ButtonProperties).Label
+    : undefined
 
   const inputFieldProps = getInputFieldProps(component)
 
@@ -29,7 +44,10 @@ export function FileUpload(component: DesignComponent): DevComponent {
     'KFileUpload',
     {
       placeholder,
+      buttonText: buttonText !== 'Select file' ? buttonText : undefined,
       ...inputFieldProps,
+      onFileAdded: 'files => {}',
+      onFileRemoved: 'files => {}',
     },
     icon ? [h('template', { '#icon': true }, [icon])] : undefined,
   )

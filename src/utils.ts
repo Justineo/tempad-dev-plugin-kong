@@ -18,8 +18,11 @@ export function toConstantCase(name: string): string {
   return name.toUpperCase().replace(/-/g, '_')
 }
 
-export function renderIcon(icon: DesignComponent): DevComponent {
-  return h(`${toPascalCase(icon.name)}Icon`)
+export function renderIcon(
+  icon: DesignComponent,
+  props: DevComponent['props'] = {},
+): DevComponent {
+  return h(`${toPascalCase(icon.name)}Icon`, props)
 }
 
 const tokenSet = new Set(

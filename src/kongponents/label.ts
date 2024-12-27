@@ -15,6 +15,11 @@ export type TooltipProperties = {
   Text: string
 }
 
+export type LabelProps = {
+  info?: string
+  required?: boolean
+}
+
 export function Label(component: DesignComponent): DevComponent {
   const {
     Label,
@@ -22,7 +27,7 @@ export function Label(component: DesignComponent): DevComponent {
     'Show tooltip': ShowInfoTooltip,
   } = component.properties as LabelProperties
 
-  const props: Record<string, unknown> = {}
+  const props: LabelProps = {}
 
   if (ShowRequired) {
     props.required = true

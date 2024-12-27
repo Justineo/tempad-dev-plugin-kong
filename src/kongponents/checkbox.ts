@@ -1,5 +1,8 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import type { InputFieldProperties } from './mixins/input-field'
+import type {
+  InputFieldProperties,
+  InputFieldProps,
+} from './mixins/input-field'
 import { h } from '@tempad-dev/plugins'
 import { getInputFieldProps } from './mixins/input-field'
 
@@ -12,11 +15,23 @@ export function Checkbox(component: DesignComponent): DevComponent {
 
   const indeterminate = Type === 'Indeterminate' ? true : undefined
 
-  const inputFieldProps = getInputFieldProps(component, { help: 'description' })
+  const {
+    required,
+    label,
+    labelAttributes,
+    ...inputFieldProps
+  }: InputFieldProps = getInputFieldProps(component, {
+    help: 'description',
+  })
 
   return h('KCheckbox', {
     'v-model': 'checked',
     indeterminate,
+    label,
+    labelAttributes: {
+      ...labelAttributes,
+      required,
+    },
     ...inputFieldProps,
   })
 }
