@@ -49,7 +49,7 @@ export function RadioCard(component: DesignComponent): DevComponent {
       'v-model': 'checked',
       label: label?.properties.Label || undefined,
       description: help?.properties.Text || undefined,
-      cardRadioVisible: true, // Design component only support this style
+      cardRadioVisible: false, // Design component only support this style
     },
     icon ? [renderIcon(icon)] : [],
   )
