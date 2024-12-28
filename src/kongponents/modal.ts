@@ -102,7 +102,7 @@ export function Modal(component: DesignComponent): DevComponent {
   const cancelButtonAppearance = pickProp(
     cancelButtonProps,
     'appearance',
-    'secondary',
+    'tertiary',
   )
   const cancelButtonDisabled = pickProp(cancelButtonProps, 'disabled', false)
   const hideCancelButton = pickProp(cancelButtonProps, 'hide', false)
@@ -111,7 +111,7 @@ export function Modal(component: DesignComponent): DevComponent {
     'KModal',
     {
       ':visible': 'modalVisible',
-      title: titleSlot ?? title,
+      title: titleSlot ? title : undefined,
       actionButtonText,
       actionButtonAppearance,
       actionButtonDisabled,
