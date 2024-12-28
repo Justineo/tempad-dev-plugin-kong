@@ -111,7 +111,7 @@ export function Modal(component: DesignComponent): DevComponent {
     'KModal',
     {
       ':visible': 'modalVisible',
-      title: titleSlot ? title : undefined,
+      title: titleSlot ? undefined : title,
       actionButtonText,
       actionButtonAppearance,
       actionButtonDisabled,
