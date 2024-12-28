@@ -4,7 +4,7 @@ import type {
   InputFieldProps,
 } from './mixins/input-field'
 import { findChild, h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import { pruneUndefined, renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type RadioProperties = {
@@ -24,10 +24,10 @@ export function Radio(component: DesignComponent): DevComponent {
   return h('KRadio', {
     'v-model': 'checked',
     label,
-    labelAttributes: {
+    labelAttributes: pruneUndefined({
       ...labelAttributes,
       required,
-    },
+    }),
     ...inputFieldProps,
   })
 }

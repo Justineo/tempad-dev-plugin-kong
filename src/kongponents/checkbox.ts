@@ -4,6 +4,7 @@ import type {
   InputFieldProps,
 } from './mixins/input-field'
 import { h } from '@tempad-dev/plugins'
+import { pruneUndefined } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type CheckboxProperties = {
@@ -29,10 +30,10 @@ export function Checkbox(component: DesignComponent): DevComponent {
     'v-model': 'checked',
     indeterminate,
     label,
-    labelAttributes: {
+    labelAttributes: pruneUndefined({
       ...labelAttributes,
       required,
-    },
+    }),
     ...inputFieldProps,
   })
 }
