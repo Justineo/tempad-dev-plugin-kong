@@ -35,7 +35,7 @@ export function Label(component: DesignComponent): DevComponent {
 
   const infoTooltip = findChild<DesignComponent>(component, {
     type: 'INSTANCE',
-    name: 'Info Tooltip',
+    name: 'Tooltip',
   })
   if (ShowInfoTooltip && infoTooltip) {
     props.info = '...'
