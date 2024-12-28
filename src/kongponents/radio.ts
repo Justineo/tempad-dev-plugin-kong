@@ -3,7 +3,7 @@ import type {
   InputFieldProperties,
   InputFieldProps,
 } from './mixins/input-field'
-import { findChild, h } from '@tempad-dev/plugins'
+import { findChild, findOne, h } from '@tempad-dev/plugins'
 import { pruneUndefined, renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
@@ -34,11 +34,11 @@ export function Radio(component: DesignComponent): DevComponent {
 
 export function RadioCard(component: DesignComponent): DevComponent {
   const icon = findChild<DesignComponent>(component, { type: 'INSTANCE' })
-  const label = findChild<DesignComponent>(component, {
+  const label = findOne<DesignComponent>(component, {
     type: 'INSTANCE',
     name: 'Label',
   })
-  const help = findChild<DesignComponent>(component, {
+  const help = findOne<DesignComponent>(component, {
     type: 'INSTANCE',
     name: 'Help Text',
   })
