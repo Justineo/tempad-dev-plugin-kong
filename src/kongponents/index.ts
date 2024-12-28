@@ -18,6 +18,7 @@ import { FileUpload } from './file-upload'
 import { Input } from './input'
 import { Label } from './label'
 import { Modal } from './modal'
+import { Multiselect } from './multiselect'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -41,6 +42,7 @@ const componentMap: Record<string, RenderFn> = {
   Input,
   Label,
   Modal,
+  Multiselect,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({

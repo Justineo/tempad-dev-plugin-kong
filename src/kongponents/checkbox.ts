@@ -7,6 +7,7 @@ import { h } from '@tempad-dev/plugins'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type CheckboxProperties = {
+  'Show value': never
   Type: string
 } & InputFieldProperties
 

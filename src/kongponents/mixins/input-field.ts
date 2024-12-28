@@ -6,6 +6,7 @@ import { Label } from '../label'
 
 export type InputFieldProperties = {
   State: string
+  'Show value': 'True' | 'False'
   'Show label': boolean
   'Show help text': boolean
 }

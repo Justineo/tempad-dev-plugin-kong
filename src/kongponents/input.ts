@@ -9,7 +9,6 @@ import { renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type InputProperties = {
-  'Show value': string
   Placeholder?: string
   'Show icon left': boolean
   'Icon left'?: DesignComponent
