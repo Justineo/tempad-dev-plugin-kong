@@ -21,6 +21,7 @@ import { Modal } from './modal'
 import { Multiselect } from './multiselect'
 import { Pagination } from './pagination'
 import { Popover } from './popover'
+import { Radio } from './radio'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -47,6 +48,7 @@ const componentMap: Record<string, RenderFn> = {
   Multiselect,
   Pagination,
   Popover,
+  Radio,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
