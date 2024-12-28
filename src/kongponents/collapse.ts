@@ -4,6 +4,7 @@ import type {
   TextNode,
 } from '@tempad-dev/plugins'
 import { findOne, h } from '@tempad-dev/plugins'
+import { LOREM_IPSUM_TEXT } from '../utils'
 
 export type CollapseProperties = {
   'Show link': boolean
@@ -17,6 +18,6 @@ export function Collapse(component: DesignComponent): DevComponent {
   const triggerLabel = (ShowLink && link?.characters) || undefined
 
   return h('KCollapse', { 'v-model': 'isCollapsed', triggerLabel }, [
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+    LOREM_IPSUM_TEXT,
   ])
 }

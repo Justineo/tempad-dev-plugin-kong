@@ -74,3 +74,7 @@ export function pruneUndefined<T extends Record<string, unknown>>(
 } {
   return JSON.parse(JSON.stringify(obj))
 }
+
+export const LOREM_IPSUM_TITLE = 'Lorem ipsum'
+export const LOREM_IPSUM_TEXT =
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
