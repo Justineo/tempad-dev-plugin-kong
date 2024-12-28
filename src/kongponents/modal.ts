@@ -5,7 +5,7 @@ import type {
   TextNode,
 } from '@tempad-dev/plugins'
 import { findChild, findChildren, h } from '@tempad-dev/plugins'
-import { LOREM_IPSUM_TEXT, LOREM_IPSUM_TITLE } from '../utils'
+import { LOREM_IPSUM_TEXT, LOREM_IPSUM_TITLE, renderIcon } from '../utils'
 import { Button } from './button'
 
 export type ModalHeaderProperties = {
@@ -31,7 +31,9 @@ export function Modal(component: DesignComponent): DevComponent {
   }
 
   const titleSlot =
-    ShowIcon && Icon ? h('template', { '#title': true }, [title]) : undefined
+    ShowIcon && Icon
+      ? h('template', { '#title': true }, [renderIcon(Icon), title])
+      : undefined
 
   const footer = findChild<DesignComponent>(component, {
     type: 'INSTANCE',
@@ -71,8 +73,8 @@ export function Modal(component: DesignComponent): DevComponent {
       Object.assign(actionButtonProps, actionButton.props)
       Object.assign(cancelButtonProps, cancelButton.props)
       if (
-        actionButton.children[0] === 'string' &&
-        cancelButton.children[0] === 'string'
+        typeof actionButton.children[0] === 'string' &&
+        typeof cancelButton.children[0] === 'string'
       ) {
         actionButtonProps.label = actionButton.children[0]
         cancelButtonProps.label = cancelButton.children[0]
@@ -88,11 +90,35 @@ export function Modal(component: DesignComponent): DevComponent {
     ? h('template', { '#footer-actions': true }, actionsSlotContent)
     : undefined
 
+  const actionButtonText = pickProp(actionButtonProps, 'label', 'Submit')
+  const actionButtonAppearance = pickProp(
+    actionButtonProps,
+    'appearance',
+    'primary',
+  )
+  const actionButtonDisabled = pickProp(actionButtonProps, 'disabled', false)
+
+  const cancelButtonText = pickProp(cancelButtonProps, 'label', 'Cancel')
+  const cancelButtonAppearance = pickProp(
+    cancelButtonProps,
+    'appearance',
+    'secondary',
+  )
+  const cancelButtonDisabled = pickProp(cancelButtonProps, 'disabled', false)
+  const hideCancelButton = pickProp(cancelButtonProps, 'hide', false)
+
   return h(
     'KModal',
     {
       ':visible': 'modalVisible',
-      title,
+      title: titleSlot ?? title,
+      actionButtonText,
+      actionButtonAppearance,
+      actionButtonDisabled,
+      cancelButtonText,
+      cancelButtonAppearance,
+      cancelButtonDisabled,
+      hideCancelButton,
     },
     [
       ...(titleSlot ? [titleSlot] : []),
@@ -100,4 +126,13 @@ export function Modal(component: DesignComponent): DevComponent {
       ...(actionsSlot ? [actionsSlot] : []),
     ],
   )
+}
+
+function pickProp(
+  props: DevComponent['props'],
+  key: string,
+  defaultValue: unknown,
+): unknown {
+  const value = props[key]
+  return value === defaultValue ? undefined : value || undefined
 }
