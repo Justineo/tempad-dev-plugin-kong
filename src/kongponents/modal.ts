@@ -24,10 +24,16 @@ export function Modal(component: DesignComponent): DevComponent {
     : {}
 
   let title: string = LOREM_IPSUM_TITLE
+  let hideCloseIcon = false
   if (header) {
     title =
       findChild<TextNode>(header, { type: 'TEXT', name: 'Modal title' })
         ?.characters || title
+
+    hideCloseIcon = !findChild<DesignComponent>(header, {
+      type: 'INSTANCE',
+      name: 'close',
+    })
   }
 
   const titleSlot =
@@ -119,6 +125,7 @@ export function Modal(component: DesignComponent): DevComponent {
       cancelButtonAppearance,
       cancelButtonDisabled,
       hideCancelButton,
+      hideCloseIcon: hideCloseIcon || undefined,
     },
     [
       ...(titleSlot ? [titleSlot] : []),
