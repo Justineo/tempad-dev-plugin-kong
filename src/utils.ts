@@ -10,6 +10,13 @@ export function toCamelCase(name: string): string {
   return name.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase())
 }
 
+export function toKebabCase(name: string): string {
+  return name
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[_\s]/g, '-')
+    .toLowerCase()
+}
+
 export function toPascalCase(name: string): string {
   return toUpperFirst(toCamelCase(name))
 }
