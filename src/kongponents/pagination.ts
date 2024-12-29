@@ -2,6 +2,7 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { findChild, h } from '@tempad-dev/plugins'
 
 export type PaginationProperties = {
+  Selected: 'Start' | 'Middle' | 'End'
   'Show pages': boolean
 }
 

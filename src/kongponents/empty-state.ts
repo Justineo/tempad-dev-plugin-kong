@@ -1,4 +1,5 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { ButtonProperties } from './button'
 import { findChildren, findOne, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 import { Button } from './button'
@@ -9,12 +10,6 @@ export type EmptyStateProperties = {
   Title: string
   Description: string
   'Show button': boolean
-}
-
-export type ButtonProperties = {
-  Appearance: string
-  Label: string
-  State: string
 }
 
 export function EmptyState(component: DesignComponent): DevComponent {

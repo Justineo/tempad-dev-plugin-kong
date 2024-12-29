@@ -2,6 +2,7 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import type {
   InputFieldProperties,
   InputFieldProps,
+  InputFieldState,
 } from './mixins/input-field'
 import { h } from '@tempad-dev/plugins'
 
@@ -9,12 +10,12 @@ import { renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type InputProperties = {
-  Placeholder?: string
+  State: InputFieldState | 'Readonly'
   'Show icon left': boolean
   'Icon left'?: DesignComponent
   'Show icon right': boolean
   'Icon right'?: DesignComponent
-} & InputFieldProperties
+} & Omit<InputFieldProperties, 'State'>
 
 export function Input(component: DesignComponent): DevComponent {
   const {

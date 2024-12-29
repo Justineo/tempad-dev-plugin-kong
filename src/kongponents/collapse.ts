@@ -3,10 +3,13 @@ import type {
   DevComponent,
   TextNode,
 } from '@tempad-dev/plugins'
+import type { BooleanVariant } from './shared-types'
 import { findOne, h } from '@tempad-dev/plugins'
 import { LOREM_IPSUM_TEXT } from '../utils'
 
 export type CollapseProperties = {
+  Collapsed: BooleanVariant
+  Size: 'Default' | 'Large' | 'Small'
   'Show link': boolean
 }
 

@@ -9,7 +9,6 @@ import { h } from '@tempad-dev/plugins'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type MultiselectProperties = {
-  Placeholder?: string
   // 'Show icon left': boolean
   // 'Icon left'?: DesignComponent
 } & InputFieldProperties

@@ -2,7 +2,16 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import { h } from '@tempad-dev/plugins'
 
 export type DateTimePickerProperties = {
-  Appearance: string
+  Appearance:
+    | 'Date'
+    | 'Date and time'
+    | 'Range'
+    | 'Range and time'
+    | 'Months'
+    | 'Years'
+    | 'Custom date'
+    | 'Custom date and time'
+    | 'Relative date'
 }
 
 export function DatePicker(component: DesignComponent): DevComponent {
@@ -14,6 +23,8 @@ export function DatePicker(component: DesignComponent): DevComponent {
     'Date and time': 'dateTime',
     Range: 'date',
     'Range and time': 'dataTime',
+    Months: 'UNSUPPORTED',
+    Years: 'UNSUPPORTED',
     'Custom date': 'relativeDate',
     'Custom date and time': 'relativeDateTime',
     'Relative date': 'relativeDate',

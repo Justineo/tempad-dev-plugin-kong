@@ -9,7 +9,9 @@ import { getInputFieldProps } from './mixins/input-field'
 
 export type CheckboxProperties = {
   'Show value': never
-  Type: string
+  Value: never
+  Placeholder: never
+  Type: 'Unchecked' | 'Checked' | 'Indeterminate'
 } & InputFieldProperties
 
 export function Checkbox(component: DesignComponent): DevComponent {

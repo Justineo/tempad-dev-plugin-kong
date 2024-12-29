@@ -1,4 +1,5 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { BooleanVariant } from './shared-types'
 import { findChildren, h } from '@tempad-dev/plugins'
 import { pruneUndefined, renderIcon } from '../utils'
 
@@ -7,6 +8,7 @@ export type DropdownOptionProperties = {
   'Show left icon': boolean
   'Left icon'?: DesignComponent
   Label: string
+  'Show badge': BooleanVariant
 }
 
 export function Dropdown(component: DesignComponent): DevComponent {

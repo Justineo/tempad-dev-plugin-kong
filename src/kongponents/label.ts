@@ -7,11 +7,11 @@ export type LabelProperties = {
   'Show tooltip': boolean
 }
 
-export type InfoTooltipProperties = {
+type InfoTooltipProperties = {
   'Show tooltip': boolean
 }
 
-export type TooltipProperties = {
+type TooltipProperties = {
   Text: string
 }
 

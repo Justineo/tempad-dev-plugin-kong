@@ -1,10 +1,15 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { BooleanVariant } from './shared-types'
 import { findChildren, h } from '@tempad-dev/plugins'
 import { pruneUndefined, renderIcon } from '../utils'
 
+export type BreadcrumbsProperties = {
+  Levels: '1' | '2' | '3' | '4'
+}
+
 export type BreadcrumbsItemProperties = {
   Icon: DesignComponent
-  Selected: boolean
+  Selected: BooleanVariant
   'Show icon': boolean
   Text: string
 }

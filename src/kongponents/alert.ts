@@ -3,10 +3,11 @@ import type {
   DevComponent,
   TextNode,
 } from '@tempad-dev/plugins'
+import type { ContextualAppearance } from './shared-types'
 import { findOne, h } from '@tempad-dev/plugins'
 
 export type AlertProperties = {
-  Appearance: string
+  Appearance: ContextualAppearance
   'Show icon': boolean
   'Show title': boolean
   Title?: string

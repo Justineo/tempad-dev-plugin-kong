@@ -6,8 +6,10 @@ import type {
 import { findOne, h } from '@tempad-dev/plugins'
 
 export type PopoverProperties = {
+  Position: 'Top' | 'Right' | 'Bottom' | 'Left'
   Text: string
   Heading: string
+  'Show button': boolean
 }
 
 export function Popover(component: DesignComponent): DevComponent {

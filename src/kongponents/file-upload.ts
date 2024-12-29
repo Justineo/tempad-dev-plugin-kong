@@ -10,7 +10,7 @@ import { renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type FileUploadProperties = {
-  Placeholder?: string
+  Placeholder: never
   'Show icon left': boolean
   'Icon left'?: DesignComponent
 } & InputFieldProperties

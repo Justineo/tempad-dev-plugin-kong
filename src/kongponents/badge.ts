@@ -1,14 +1,16 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { ContextualAppearance } from './shared-types'
 import { h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
 export type BadgeProperties = {
-  Appearance: string
+  Appearance: ContextualAppearance | 'Neutral' | 'Decorative'
   'Show icon left': boolean
   'Icon left'?: DesignComponent
   'Show icon right': boolean
   'Icon right'?: DesignComponent
   Label: string
+  Size: 'Default' | 'Small'
 }
 
 export function Badge(component: DesignComponent): DevComponent {
@@ -39,7 +41,17 @@ export function Badge(component: DesignComponent): DevComponent {
 }
 
 export type MethodBadgeProperties = {
-  Method: string
+  Method:
+    | 'Get'
+    | 'Post'
+    | 'Put'
+    | 'Delete'
+    | 'Patch'
+    | 'Options'
+    | 'Head'
+    | 'Connect'
+    | 'Trace'
+    | 'Custom'
 }
 
 export function MethodBadge(component: DesignComponent): DevComponent {

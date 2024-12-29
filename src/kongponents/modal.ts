@@ -8,7 +8,7 @@ import { findChild, findChildren, h } from '@tempad-dev/plugins'
 import { LOREM_IPSUM_TEXT, LOREM_IPSUM_TITLE, renderIcon } from '../utils'
 import { Button } from './button'
 
-export type ModalHeaderProperties = {
+type ModalHeaderProperties = {
   'Show icon': boolean
   Icon?: DesignComponent
 }

@@ -1,22 +1,16 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { ButtonProperties } from './button'
 import { findOne, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
+type ThemeVariant = 'Light' | 'Dark'
+
 export type CodeBlockProperties = {
-  Theme: string
+  Theme: ThemeVariant
   'Show functions': boolean
   'Show method': boolean
   'Show copy': boolean
   'Show alt action': boolean
-}
-
-export type CodeLineProperties = {
-  Theme: string
-}
-
-export type SecondaryButtonProperties = {
-  'Icon left': DesignComponent
-  Label: string
 }
 
 export function CodeBlock(component: DesignComponent): DevComponent {
@@ -43,7 +37,7 @@ export function CodeBlock(component: DesignComponent): DevComponent {
   })
   if (ShowAltAction && iconButton) {
     const { 'Icon left': icon, Label: label } =
-      iconButton.properties as SecondaryButtonProperties
+      iconButton.properties as ButtonProperties
 
     const secondaryChildren: (DevComponent | string)[] = []
 
@@ -89,6 +83,10 @@ export function CodeBlock(component: DesignComponent): DevComponent {
     },
     secondary ? [secondary] : [],
   )
+}
+
+export type CodeLineProperties = {
+  Theme: ThemeVariant
 }
 
 export function CodeLine(component: DesignComponent): DevComponent {

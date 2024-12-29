@@ -1,12 +1,17 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import type { LabelProps } from '../label'
+import type { BasicState, BooleanVariant } from '../shared-types'
 import { findOne } from '@tempad-dev/plugins'
 import { mapKey } from '../../utils'
 import { Label } from '../label'
 
+export type InputFieldState = BasicState | 'Error'
+
 export type InputFieldProperties = {
-  State: string
-  'Show value': 'True' | 'False'
+  State: InputFieldState
+  'Show value': BooleanVariant
+  Value: string
+  Placeholder?: string
   'Show label': boolean
   'Show help text': boolean
 }

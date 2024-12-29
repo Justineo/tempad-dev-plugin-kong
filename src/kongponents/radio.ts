@@ -2,13 +2,18 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import type {
   InputFieldProperties,
   InputFieldProps,
+  InputFieldState,
 } from './mixins/input-field'
+import type { BooleanVariant } from './shared-types'
 import { findChild, findOne, h } from '@tempad-dev/plugins'
 import { pruneUndefined, renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type RadioProperties = {
   'Show value': never
+  Value: never
+  Placeholder: never
+  Selected: BooleanVariant
 } & InputFieldProperties
 
 export function Radio(component: DesignComponent): DevComponent {
@@ -30,6 +35,11 @@ export function Radio(component: DesignComponent): DevComponent {
     }),
     ...inputFieldProps,
   })
+}
+
+export type RadioCardProperties = {
+  Selected: BooleanVariant
+  State: InputFieldState
 }
 
 export function RadioCard(component: DesignComponent): DevComponent {

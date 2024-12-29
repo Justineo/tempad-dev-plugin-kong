@@ -1,13 +1,14 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { BasicState } from './shared-types'
 import { h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
 export type ButtonProperties = {
-  Appearance: string
-  Size: string
-  State: string
+  Appearance: 'Primary' | 'Secondary' | 'Tertiary' | 'Danger'
+  Size: 'Medium' | 'Small' | 'Large'
+  State: BasicState
   Label: string
-  Position?: string
+  Position?: 'Left' | 'Right'
   Icon?: DesignComponent
   'Icon danger'?: DesignComponent
   'Icon left'?: DesignComponent
@@ -40,10 +41,7 @@ export function Button(component: DesignComponent): DevComponent {
     Large: 'large',
   }[Size]
 
-  const disabled = {
-    Disabled: true,
-    Default: undefined, // default
-  }[State]
+  const disabled = State === 'Disabled' || undefined
 
   let children: DevComponent['children'] = []
 
