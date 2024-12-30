@@ -10,7 +10,7 @@ export type InputFieldState = BasicState | 'Error'
 export type InputFieldProperties = {
   State: InputFieldState
   'Show value': BooleanVariant
-  Value: string
+  Value?: string
   Placeholder?: string
   'Show label': boolean
   'Show help text': boolean

@@ -23,6 +23,7 @@ import { Pagination } from './pagination'
 import { Popover } from './popover'
 import { Radio, RadioCard } from './radio'
 import { SegmentedControl } from './segmented-control'
+import { Select } from './select'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -52,6 +53,7 @@ const componentMap: Record<string, RenderFn> = {
   Radio,
   RadioCard,
   SegmentedControl,
+  Select,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
