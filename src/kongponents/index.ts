@@ -29,6 +29,7 @@ import { Slideout } from './slideout'
 import { Stepper } from './stepper'
 import { Switch } from './switch'
 import { Tabs } from './tabs'
+import { TextArea } from './text-area'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -67,6 +68,7 @@ const componentMap: Record<string, RenderFn> = {
   Stepper,
   Tabs,
   Switch,
+  TextArea,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
