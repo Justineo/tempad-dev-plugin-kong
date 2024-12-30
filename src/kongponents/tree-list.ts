@@ -1,11 +1,25 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import { findAll, h } from '@tempad-dev/plugins'
+import { findAll, findChild, h } from '@tempad-dev/plugins'
 import { renderIcon } from '../utils'
 
+type TreeListItemProperties = {
+  Icon: DesignComponent
+  Label: string
+}
+
 export function TreeList(component: DesignComponent): DevComponent {
-  const icons = findAll<DesignComponent>(component, {
+  const items = findAll<DesignComponent>(component, {
     type: 'INSTANCE',
-    name: 'Icon',
+    name: 'Parts/.List Item',
+  })
+
+  const iconNodes = items.map((item) => {
+    return findChild<DesignComponent>(item, { type: 'INSTANCE', name: 'Icon' })
+  })
+
+  const icons = items.map((item) => {
+    const { Icon } = item.properties as TreeListItemProperties
+    return Icon
   })
 
   const dedupedIcons = [
@@ -20,7 +34,9 @@ export function TreeList(component: DesignComponent): DevComponent {
     dedupedIcons.map((icon, i) => {
       const condition =
         dedupedIcons.length === 1
-          ? {}
+          ? iconNodes.length === items.length
+            ? {}
+            : { 'v-if': '...' }
           : i === 0
             ? { 'v-if': '...' }
             : i === dedupedIcons.length - 1
@@ -35,8 +51,10 @@ export function TreeList(component: DesignComponent): DevComponent {
     'KTreeList',
     {
       ':items': 'items',
-      hideIcons: icons.length === 0,
+      hideIcons: iconNodes.length === 0,
     },
-    [iconSlot],
+    dedupedIcons.length === 1 && dedupedIcons[0].name === 'document'
+      ? []
+      : [iconSlot],
   )
 }
