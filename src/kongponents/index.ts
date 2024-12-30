@@ -30,6 +30,7 @@ import { Stepper } from './stepper'
 import { Switch } from './switch'
 import { Tabs } from './tabs'
 import { TextArea } from './text-area'
+import { Toaster } from './toaster'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -69,6 +70,7 @@ const componentMap: Record<string, RenderFn> = {
   Tabs,
   Switch,
   Textarea: TextArea,
+  Toast: Toaster,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
