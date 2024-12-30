@@ -51,7 +51,7 @@ export function TreeList(component: DesignComponent): DevComponent {
     'KTreeList',
     {
       ':items': 'items',
-      hideIcons: iconNodes.length === 0,
+      hideIcons: iconNodes.length === 0 || undefined,
     },
     dedupedIcons.length === 1 && dedupedIcons[0].name === 'document'
       ? []
