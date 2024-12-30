@@ -60,7 +60,7 @@ export function Tabs(component: DesignComponent): DevComponent {
     'KTabs',
     {
       'v-model': 'tabs',
-      ':tabs': 'tabs',
+      tabs,
     },
     slots,
   )
