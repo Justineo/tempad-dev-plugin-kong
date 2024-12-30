@@ -5,6 +5,7 @@ import type {
   TextNode,
 } from '@tempad-dev/plugins'
 import { findChild, findOne, h } from '@tempad-dev/plugins'
+import { LOREM_IPSUM_TEXT } from '../utils'
 import { Tabs } from './tabs'
 
 export type SlideoutProperties = {
@@ -38,6 +39,6 @@ export function Slideout(component: DesignComponent): DevComponent {
       ':visible': 'slideoutVisible',
       title,
     },
-    tabs ? [Tabs(tabs)] : [],
+    [...(tabs ? [Tabs(tabs)] : []), LOREM_IPSUM_TEXT],
   )
 }
