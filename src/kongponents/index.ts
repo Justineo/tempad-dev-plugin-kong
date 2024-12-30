@@ -26,6 +26,7 @@ import { SegmentedControl } from './segmented-control'
 import { Select } from './select'
 import { Skeleton } from './skeleton'
 import { Slideout } from './slideout'
+import { Stepper } from './stepper'
 import { Tabs } from './tabs'
 
 type RenderFn = (component: DesignComponent) => DevComponent
@@ -62,6 +63,7 @@ const componentMap: Record<string, RenderFn> = {
   'SkeletonLoader/Form': Skeleton,
   'SkeletonLoader/Table': Skeleton,
   Slideout,
+  Stepper,
   Tabs,
 }
 
