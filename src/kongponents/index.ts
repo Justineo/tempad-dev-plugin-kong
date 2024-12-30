@@ -68,7 +68,7 @@ const componentMap: Record<string, RenderFn> = {
   Stepper,
   Tabs,
   Switch,
-  TextArea,
+  Textarea: TextArea,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
