@@ -32,6 +32,7 @@ import { Tabs } from './tabs'
 import { TextArea } from './text-area'
 import { Toaster } from './toaster'
 import { InfoTooltip, Tooltip } from './tooltip'
+import { TreeList } from './tree-list'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -74,6 +75,7 @@ const componentMap: Record<string, RenderFn> = {
   Toast: Toaster,
   Tooltip,
   InfoTooltip,
+  TreeList,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
