@@ -50,7 +50,6 @@ const componentMap: Record<string, RenderFn> = {
   EmptyState,
   FileUpload,
   Input,
-  InputSwitch: Switch,
   Label,
   Modal,
   Multiselect,
@@ -67,6 +66,7 @@ const componentMap: Record<string, RenderFn> = {
   Slideout,
   Stepper,
   Tabs,
+  Switch,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({

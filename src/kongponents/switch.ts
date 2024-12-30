@@ -16,7 +16,7 @@ export function Switch(component: DesignComponent): DevComponent {
     Small: 'small',
   }[Size]
 
-  return h('KSwitch', {
+  return h('KInputSwitch', {
     'v-model': 'switchValue',
     label: LOREM_IPSUM_TITLE,
     labelBefore: true,
