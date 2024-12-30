@@ -27,6 +27,7 @@ import { Select } from './select'
 import { Skeleton } from './skeleton'
 import { Slideout } from './slideout'
 import { Stepper } from './stepper'
+import { Switch } from './switch'
 import { Tabs } from './tabs'
 
 type RenderFn = (component: DesignComponent) => DevComponent
@@ -49,6 +50,7 @@ const componentMap: Record<string, RenderFn> = {
   EmptyState,
   FileUpload,
   Input,
+  InputSwitch: Switch,
   Label,
   Modal,
   Multiselect,

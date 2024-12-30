@@ -4,6 +4,7 @@ import type {
   TextNode,
 } from '@tempad-dev/plugins'
 import { findAll, h } from '@tempad-dev/plugins'
+import { pruneUndefined } from '../utils'
 
 export type StepperProperties = {
   Steps: '2' | '3' | '4' | '5'
@@ -35,10 +36,10 @@ export function Stepper(component: DesignComponent): DevComponent {
     const { Appearance } = icon.properties as StepIconProperties
     const state = StateMap[Appearance]
 
-    return {
+    return pruneUndefined({
       label: label.characters,
       state: state === 'default' ? undefined : state,
-    }
+    })
   })
 
   return h('KStepper', {
