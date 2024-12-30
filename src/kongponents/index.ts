@@ -24,6 +24,7 @@ import { Popover } from './popover'
 import { Radio, RadioCard } from './radio'
 import { SegmentedControl } from './segmented-control'
 import { Select } from './select'
+import { Skeleton } from './skeleton'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -54,6 +55,10 @@ const componentMap: Record<string, RenderFn> = {
   RadioCard,
   SegmentedControl,
   Select,
+  'SkeletonLoader/Generic': Skeleton,
+  'SkeletonLoader/Card': Skeleton,
+  'SkeletonLoader/Form': Skeleton,
+  'SkeletonLoader/Table': Skeleton,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
