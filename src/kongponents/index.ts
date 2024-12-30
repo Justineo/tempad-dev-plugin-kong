@@ -31,6 +31,7 @@ import { Switch } from './switch'
 import { Tabs } from './tabs'
 import { TextArea } from './text-area'
 import { Toaster } from './toaster'
+import { InfoTooltip, Tooltip } from './tooltip'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -71,6 +72,8 @@ const componentMap: Record<string, RenderFn> = {
   Switch,
   Textarea: TextArea,
   Toast: Toaster,
+  Tooltip,
+  InfoTooltip,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
