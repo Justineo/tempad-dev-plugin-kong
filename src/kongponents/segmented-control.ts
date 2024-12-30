@@ -43,11 +43,11 @@ export function SegmentedControl(component: DesignComponent): DevComponent {
         name: 'option',
       })?.characters || ''
 
-    return {
+    return pruneUndefined({
       label,
       value: toKebabCase(label),
       disabled,
-    }
+    })
   })
 
   const disabled = options.every((option) => option.disabled) || undefined
@@ -60,7 +60,7 @@ export function SegmentedControl(component: DesignComponent): DevComponent {
 
   return h('KSegmentedControl', {
     ':v-model': 'selected',
-    options: options.map((option) => pruneUndefined(option)),
+    options,
     size,
     disabled,
   })

@@ -25,6 +25,8 @@ import { Radio, RadioCard } from './radio'
 import { SegmentedControl } from './segmented-control'
 import { Select } from './select'
 import { Skeleton } from './skeleton'
+import { Slideout } from './slideout'
+import { Tabs } from './tabs'
 
 type RenderFn = (component: DesignComponent) => DevComponent
 
@@ -59,6 +61,8 @@ const componentMap: Record<string, RenderFn> = {
   'SkeletonLoader/Card': Skeleton,
   'SkeletonLoader/Form': Skeleton,
   'SkeletonLoader/Table': Skeleton,
+  Slideout,
+  Tabs,
 }
 
 export const transformComponent: TransformOptions['transformComponent'] = ({
