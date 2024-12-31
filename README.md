@@ -2,11 +2,15 @@
 
 Kong UI plugins for [Tempad Dev](https://github.com/ecomfe/tempad-dev).
 
-Enhance your development workflow with customizable UI components and streamlined CSS generation using design tokens.
+This plugin allows you to view component code and style code in both SCSS and JS formats, specifically tailored for Kong’s design system.
 
 ## Installation
 
-In TemPad Dev's plugins section, install `@kong` or `@kong-advanced`.
+1. Install [TemPad Dev](https://chromewebstore.google.com/detail/tempad-dev/lgoeakbaikpkihoiphamaeopmliaimpc) from Chrome Web Store.
+
+2. Install `@kong` or `@kong-advanced` in TemPad Dev's plugins section.
+
+![Click the add button in the plugins section, enter "@kong" and press enter to install](/assets/kong.gif)
 
 ## Features
 
