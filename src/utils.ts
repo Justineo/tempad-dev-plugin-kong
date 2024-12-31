@@ -62,7 +62,7 @@ export function getTokenName(
   token: string,
   type?: 'scss' | 'js',
 ): string | null {
-  const parts = token.split('-')
+  const parts = token.toLowerCase().split(/[-/_ ]/)
   let tokenName: string | null = null
   while (parts.length) {
     const name = parts.join('-')
