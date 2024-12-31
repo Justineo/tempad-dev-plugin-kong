@@ -6,4 +6,5 @@ export default antfu({
   rules: {
     'ts/consistent-type-definitions': 'off',
   },
+  markdown: false,
 })

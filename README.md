@@ -11,7 +11,48 @@ In TemPad Dev's plugins section, install `@kong` or `@kong-advanced`.
 ## Features
 
 - **CSS Codegen**: Rewrite CSS variables using design tokens from [`@kong/design-tokens`](https://github.com/kong/design-tokens).
-- **Component Codegen**: Convert design components to [Kongponents](https://github.com/kong/kongponents) code.
+
+  e.g. SCSS output:
+
+  ```scss
+  display: flex;
+  width: 960px;
+  padding: $kui-space-90;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: $kui-space-70;
+  border-radius: $kui-border-radius-30;
+  border: $kui-border-width-10 solid $kui-color-border;
+  background: $kui-color-background;
+  ```
+
+  e.g. JS output:
+
+  ```js
+  {
+    display: 'flex',
+    width: '960px',
+    padding: KUI_SPACE_90,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: KUI_SPACE_70,
+    borderRadius: KUI_BORDER_RADIUS_30,
+    border: `${KUI_BORDER_WIDTH_10} solid ${KUI_COLOR_BORDER}`,
+    background: KUI_COLOR_BACKGROUND
+  }
+  ```
+
+- **Component Codegen**: Convert design components to [Kongponents](https://github.com/kong/kongponents) code. e.g. `Empty State` to `KEmptyState`:
+
+  ```vue
+  <KEmptyState
+    title="Empty State Title"
+    message="Describe the reason a user is seeing an empty state."
+    action-button-text="OK"
+  />
+  ```
 
 ## License
 
