@@ -1,6 +1,10 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type {
+  DesignComponent,
+  DevComponent,
+  VectorNode,
+} from '@tempad-dev/plugins'
 import tokens from '@kong/design-tokens/tokens/js/tokens.json'
-import { h } from '@tempad-dev/plugins'
+import { findChild, h } from '@tempad-dev/plugins'
 
 export function toUpperFirst(name: string): string {
   return name.charAt(0).toUpperCase() + name.slice(1)
@@ -29,23 +33,57 @@ export function renderIcon(
   icon: DesignComponent,
   props: DevComponent['props'] = {},
 ): DevComponent {
-  return h(`${toPascalCase(icon.name)}Icon`, props)
+  const name = icon.mainComponent?.name || icon.name
+
+  const vector = findChild<VectorNode>(icon, { type: 'VECTOR' })
+  const color = vector?.fills[0]?.color
+
+  return h(
+    `${toPascalCase(name)}Icon`,
+    Object.assign(
+      color
+        ? {
+            ':color':
+              typeof color === 'string'
+                ? color
+                : getTokenName(color.name, 'js'),
+          }
+        : {},
+      props,
+    ),
+  )
 }
 
 const tokenSet = new Set(
   Object.keys(tokens).map((key) => key.substring(4).replaceAll('_', '-')),
 )
 
-export function getTokenName(token: string): string | null {
+export function getTokenName(
+  token: string,
+  type?: 'scss' | 'js',
+): string | null {
   const parts = token.split('-')
+  let tokenName: string | null = null
   while (parts.length) {
     const name = parts.join('-')
     if (tokenSet.has(name)) {
-      return name
+      tokenName = name
+      break
     }
     parts.shift()
   }
-  return null
+
+  if (!tokenName) {
+    return null
+  }
+
+  if (type === 'scss') {
+    return `$kui-${tokenName.toLowerCase()}`
+  } else if (type === 'js') {
+    return `KUI_${toConstantCase(tokenName)}`
+  } else {
+    return tokenName
+  }
 }
 
 export function mapKey(
