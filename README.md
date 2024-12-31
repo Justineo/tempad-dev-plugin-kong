@@ -44,14 +44,31 @@ In TemPad Dev's plugins section, install `@kong` or `@kong-advanced`.
   }
   ```
 
-- **Component Codegen**: Convert design components to [Kongponents](https://github.com/kong/kongponents) code. e.g. `Empty State` to `KEmptyState`:
+- **Component Codegen**: Convert design components to [Kongponents](https://github.com/kong/kongponents) code.
+
+  e.g. `Input` to `<KInput>`:
 
   ```vue
-  <KEmptyState
-    title="Empty State Title"
-    message="Describe the reason a user is seeing an empty state."
-    action-button-text="OK"
-  />
+  <KInput
+    v-model="value"
+    label="Label"
+    :label-attributes="{
+      info: '...',
+    }"
+    required
+    help="Help text is intended to provide the user with additional information to successfully complete this field."
+  >
+    <template #before>
+      <SearchIcon />
+    </template>
+    <template #after>
+      <UploadIcon
+        role="button"
+        tabindex="0"
+        @click="() => {}"
+      />
+    </template>
+  </KInput>
   ```
 
 ## License
