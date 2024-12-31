@@ -37,12 +37,12 @@ export function Breadcrumbs(component: DesignComponent): DevComponent {
 
   const items = children.map(({ item }) => pruneUndefined(item))
   const icons = children
-    .map(({ icon }, i) => {
+    .map(({ item, icon }) => {
       if (!icon) {
         return undefined
       }
 
-      return h('template', { [`#icon-level-${i}`]: true }, [renderIcon(icon)])
+      return h('template', { [`#icon-${item.key}`]: true }, [renderIcon(icon)])
     })
     .filter((t) => t != null)
 
