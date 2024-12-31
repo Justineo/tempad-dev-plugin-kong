@@ -1,7 +1,7 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import type { BooleanVariant } from './shared-types'
 import { findChildren, h } from '@tempad-dev/plugins'
-import { pruneUndefined, renderIcon } from '../utils'
+import { pruneUndefined, renderIcon, toKebabCase } from '../utils'
 
 export type BreadcrumbsProperties = {
   Levels: '1' | '2' | '3' | '4'
@@ -24,10 +24,12 @@ export function Breadcrumbs(component: DesignComponent): DevComponent {
       Text,
     } = child.properties as BreadcrumbsItemProperties
 
+    const text = Text || ''
+
     return {
       item: {
-        text: Text || undefined,
-        key: `level-${i}`,
+        text: text || undefined,
+        key: toKebabCase(text) || `level-${i}`,
       },
       icon: ShowIcon ? Icon : undefined,
     }
