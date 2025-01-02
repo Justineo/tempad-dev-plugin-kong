@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD033 -->
+
 # tempad-dev-plugin-kong
 
 Kong UI plugins for [Tempad Dev](https://github.com/ecomfe/tempad-dev).
@@ -10,7 +12,11 @@ This plugin allows you to view component code and style code in both SCSS and JS
 
 2. Install `@kong` or `@kong/advanced` in TemPad Dev's plugins section.
 
-![Click the add button in the plugins section, enter "@kong" and press enter to install](/assets/kong.gif)
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/hero-dark.gif">
+    <source media="(prefers-color-scheme: light)" srcset="assets/hero-light.gif">
+    <img alt="Click the add button in the plugins section, enter &quot;@kong&quot; and press enter to install." src="assets/hero-light.gif" width="413" height="259">
+  </picture>
 
 ## Features
 
