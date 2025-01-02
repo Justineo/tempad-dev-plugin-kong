@@ -54,6 +54,9 @@ This plugin allows you to view component code and style code in both SCSS and JS
   }
   ```
 
+  > [!NOTE]
+  > The `@kong/advanced` plugin generates property values using the `var()` function and provides the corresponding SCSS variable as a fallback. This is useful for developing libraries like `kongponents` itself.
+
 - **Component Codegen**: Convert design components to [Kongponents](https://github.com/kong/kongponents) code.
 
   e.g. `Input` to `<KInput>`:
