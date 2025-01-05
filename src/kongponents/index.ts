@@ -82,14 +82,19 @@ const componentMap: Record<string, RenderFn> = {
 export const transformComponent: TransformOptions['transformComponent'] = ({
   component,
 }) => {
-  if (
-    component.children.length === 1 &&
-    component.children[0].type === 'VECTOR'
-  ) {
-    // only child is a vector, assume it's an icon
-    return renderIcon(component)
-  }
+  try {
+    if (
+      component.children.length === 1 &&
+      component.children[0].type === 'VECTOR'
+    ) {
+      // only child is a vector, assume it's an icon
+      return renderIcon(component)
+    }
 
-  const render = componentMap[component.name.replaceAll(' ', '')]
-  return render ? render(component) : ''
+    const render = componentMap[component.name.replaceAll(' ', '')]
+    return render ? render(component) : ''
+  } catch (e: unknown) {
+    console.error(e)
+    return ''
+  }
 }
