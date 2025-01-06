@@ -3,7 +3,7 @@ import type {
   InputFieldProperties,
   InputFieldProps,
 } from './mixins/input-field'
-import { h } from '@tempad-dev/plugins'
+import { findOne, h } from '@tempad-dev/plugins'
 
 import { getInputFieldProps } from './mixins/input-field'
 
@@ -18,9 +18,16 @@ export function TextArea(component: DesignComponent): DevComponent {
 
   const inputFieldProps: InputFieldProps = getInputFieldProps(component)
 
+  const resizer = findOne<DesignComponent>(component, {
+    type: 'INSTANCE',
+    name: 'Parts/.Resize',
+  })
+  const resizable = resizer ? true : undefined
+
   return h('KTextArea', {
     'v-model': 'value',
     placeholder,
+    resizable,
     ...inputFieldProps,
   })
 }
