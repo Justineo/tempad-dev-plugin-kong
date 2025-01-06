@@ -110,14 +110,22 @@ export function mapKey(
 
 export function pruneUndefined<T extends Record<string, unknown>>(
   obj: T,
-): {
-  [K in keyof T]: T[K] extends undefined
-    ? never
-    : T[K] extends object
-      ? NonNullable<T[K]>
-      : T[K]
-} {
-  return JSON.parse(JSON.stringify(obj))
+):
+  | {
+      [K in keyof T]: T[K] extends undefined
+        ? never
+        : T[K] extends object
+          ? NonNullable<T[K]>
+          : T[K]
+    }
+  | undefined {
+  const pruned = JSON.parse(JSON.stringify(obj))
+
+  if (Object.keys(pruned).length === 0) {
+    return undefined
+  }
+
+  return pruned
 }
 
 export const LOREM_IPSUM_TITLE = 'Lorem ipsum'

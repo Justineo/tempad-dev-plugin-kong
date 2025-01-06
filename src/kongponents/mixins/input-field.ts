@@ -2,7 +2,7 @@ import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import type { LabelProps } from '../label'
 import type { BasicState, BooleanVariant } from '../shared-types'
 import { findOne } from '@tempad-dev/plugins'
-import { mapKey } from '../../utils'
+import { mapKey, pruneUndefined } from '../../utils'
 import { Label } from '../label'
 
 export type InputFieldState = BasicState | 'Error'
@@ -70,8 +70,7 @@ export function getInputFieldProps(
 
   const props: InputFieldProps = {
     label: label ? (label.children[0] as string) : undefined,
-    labelAttributes:
-      Object.keys(labelAttributes).length > 0 ? labelAttributes : undefined,
+    labelAttributes: pruneUndefined(labelAttributes),
     required,
     help,
     error: State === 'Error' ? true : undefined,
