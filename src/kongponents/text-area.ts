@@ -22,7 +22,7 @@ export function TextArea(component: DesignComponent): DevComponent {
     type: 'INSTANCE',
     name: 'Parts/.Resize',
   })
-  const resizable = resizer ? true : undefined
+  const resizable = resizer?.visible ? true : undefined
 
   return h('KTextArea', {
     'v-model': 'value',

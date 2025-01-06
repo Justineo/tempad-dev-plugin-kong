@@ -24,8 +24,8 @@ importers:
         specifier: ^1.17.2
         version: 1.17.2
       '@tempad-dev/plugins':
-        specifier: ^0.4.1
-        version: 0.4.1
+        specifier: ^0.4.2
+        version: 0.4.2
       '@types/node':
         specifier: ^22.10.2
         version: 22.10.2
@@ -888,8 +888,8 @@ packages:
     peerDependencies:
       eslint: '>=8.40.0'
 
-  '@tempad-dev/plugins@0.4.1':
-    resolution: {integrity: sha512-IRPt/hnIDXDt4RBQGA6xAY7Du+GC3cozO+06L3xyw+rogpKLB6GT4FHqPOxC9rGvs8domm3HkQ4qS/JOsClU1A==}
+  '@tempad-dev/plugins@0.4.2':
+    resolution: {integrity: sha512-W3VYIbZXcRkWgy6hjZOsB7WlBm7Gz21HG6O91oZnThXQlH/vN4X4kL6/NJZedAiXW/T51yLwvuEdfrSNolG71A==}
 
   '@trysound/sax@0.2.0':
     resolution: {integrity: sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==}
@@ -3508,7 +3508,7 @@ snapshots:
       - supports-color
       - typescript
 
-  '@tempad-dev/plugins@0.4.1': {}
+  '@tempad-dev/plugins@0.4.2': {}
 
   '@trysound/sax@0.2.0': {}
 
