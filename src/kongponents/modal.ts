@@ -4,24 +4,35 @@ import type {
   FrameNode,
   TextNode,
 } from '@tempad-dev/plugins'
-import { findChild, findChildren, h } from '@tempad-dev/plugins'
-import { LOREM_IPSUM_TEXT, LOREM_IPSUM_TITLE, renderIcon } from '../utils'
+import type { KButtonProps } from '../types'
+import type { ButtonProperties } from './button'
+import { findChild, findChildren } from '@tempad-dev/plugins'
+import {
+  cleanPropNames,
+  h,
+  LOREM_IPSUM_TEXT,
+  LOREM_IPSUM_TITLE,
+  renderIcon,
+  renderSlot,
+} from '../utils'
 import { Button } from './button'
 
-type ModalHeaderProperties = {
+export type ModalHeaderProperties = {
   'Show icon': boolean
   Icon?: DesignComponent
 }
 
-export function Modal(component: DesignComponent): DevComponent {
-  const header = findChild<DesignComponent>(component, {
+// eslint-disable-next-line ts/no-empty-object-type
+export type ModalProperties = {}
+
+export function Modal(component: DesignComponent<ModalProperties>) {
+  const header = findChild<DesignComponent<ModalHeaderProperties>>(component, {
     type: 'INSTANCE',
     name: 'Modal Header',
+    visible: true,
   })
 
-  const { 'Show icon': ShowIcon, Icon } = header
-    ? (header.properties as ModalHeaderProperties)
-    : {}
+  const { showIcon, icon } = header ? cleanPropNames(header.properties) : {}
 
   let title: string = LOREM_IPSUM_TITLE
   let hideCloseIcon = false
@@ -33,12 +44,13 @@ export function Modal(component: DesignComponent): DevComponent {
     hideCloseIcon = !findChild<DesignComponent>(header, {
       type: 'INSTANCE',
       name: 'close',
+      visible: true,
     })
   }
 
   const titleSlot =
-    ShowIcon && Icon
-      ? h('template', { '#title': true }, [renderIcon(Icon), title])
+    showIcon && icon
+      ? renderSlot('title', [renderIcon(icon), title])
       : undefined
 
   const footer = findChild<DesignComponent>(component, {
@@ -46,9 +58,11 @@ export function Modal(component: DesignComponent): DevComponent {
     name: 'Modal Footer',
   })
 
-  const actionButtonProps: DevComponent['props'] = {}
-  const cancelButtonProps: DevComponent['props'] = {}
-  let actionsSlotContent: DevComponent[] | undefined
+  const actionButtonProps: Partial<KButtonProps & { label: string }> = {}
+  const cancelButtonProps: Partial<
+    KButtonProps & { label: string; hide: boolean }
+  > = {}
+  let actionsSlotContent: DevComponent<KButtonProps>[] | undefined
 
   if (footer) {
     const actions = findChild<FrameNode>(footer, {
@@ -56,9 +70,10 @@ export function Modal(component: DesignComponent): DevComponent {
       name: 'right',
     })
     const buttons = actions
-      ? findChildren<DesignComponent>(actions, {
+      ? findChildren<DesignComponent<ButtonProperties>>(actions, {
           type: 'INSTANCE',
           name: 'Button',
+          visible: true,
         })
       : []
 
@@ -93,39 +108,32 @@ export function Modal(component: DesignComponent): DevComponent {
   }
 
   const actionsSlot = actionsSlotContent
-    ? h('template', { '#footer-actions': true }, actionsSlotContent)
+    ? renderSlot('footer-actions', actionsSlotContent)
     : undefined
-
-  const actionButtonText = pickProp(actionButtonProps, 'label', 'Submit')
-  const actionButtonAppearance = pickProp(
-    actionButtonProps,
-    'appearance',
-    'primary',
-  )
-  const actionButtonDisabled = pickProp(actionButtonProps, 'disabled', false)
-
-  const cancelButtonText = pickProp(cancelButtonProps, 'label', 'Cancel')
-  const cancelButtonAppearance = pickProp(
-    cancelButtonProps,
-    'appearance',
-    'tertiary',
-  )
-  const cancelButtonDisabled = pickProp(cancelButtonProps, 'disabled', false)
-  const hideCancelButton = pickProp(cancelButtonProps, 'hide', false)
 
   return h(
     'KModal',
     {
       ':visible': 'modalVisible',
       title: titleSlot ? undefined : title,
-      actionButtonText,
-      actionButtonAppearance,
-      actionButtonDisabled,
-      cancelButtonText,
-      cancelButtonAppearance,
-      cancelButtonDisabled,
-      hideCancelButton,
-      hideCloseIcon: hideCloseIcon || undefined,
+      actionButtonText: actionButtonProps.label,
+      actionButtonAppearance: actionButtonProps.appearance,
+      actionButtonDisabled: actionButtonProps.disabled,
+      cancelButtonText: cancelButtonProps.label,
+      cancelButtonAppearance: cancelButtonProps.appearance,
+      cancelButtonDisabled: cancelButtonProps.disabled,
+      hideCancelButton: cancelButtonProps.hide,
+      hideCloseIcon,
+    },
+    {
+      actionButtonText: 'Submit',
+      actionButtonAppearance: 'primary',
+      actionButtonDisabled: false,
+      cancelButtonText: 'Cancel',
+      cancelButtonAppearance: 'tertiary',
+      cancelButtonDisabled: false,
+      hideCancelButton: false,
+      hideCloseIcon: false,
     },
     [
       ...(titleSlot ? [titleSlot] : []),
@@ -133,13 +141,4 @@ export function Modal(component: DesignComponent): DevComponent {
       ...(actionsSlot ? [actionsSlot] : []),
     ],
   )
-}
-
-function pickProp(
-  props: DevComponent['props'],
-  key: string,
-  defaultValue: unknown,
-): unknown {
-  const value = props[key]
-  return value === defaultValue ? undefined : value || undefined
 }

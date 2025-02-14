@@ -1,7 +1,6 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import type { BasicState } from './shared-types'
-import { h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import type { BasicState } from '../types'
+import { cleanPropNames, h, renderIcon, toLowerCase } from '../utils'
 
 export type ButtonProperties = {
   Appearance: 'Primary' | 'Secondary' | 'Tertiary' | 'Danger'
@@ -15,58 +14,48 @@ export type ButtonProperties = {
   'Icon right'?: DesignComponent
 }
 
-export function Button(component: DesignComponent): DevComponent {
+export function Button(component: DesignComponent<ButtonProperties>) {
   const {
-    Appearance,
-    Size,
-    State,
-    Label,
-    Position,
-    Icon,
-    'Icon danger': IconDanger,
-    'Icon left': IconLeft,
-    'Icon right': IconRight,
-  } = component.properties as ButtonProperties
-
-  const appearance = {
-    Primary: undefined, // default
-    Secondary: 'secondary',
-    Tertiary: 'tertiary',
-    Danger: 'danger',
-  }[Appearance]
-
-  const size = {
-    Small: 'small',
-    Medium: undefined, // default
-    Large: 'large',
-  }[Size]
-
-  const disabled = State === 'Disabled' || undefined
+    appearance,
+    size,
+    state,
+    label,
+    position,
+    icon,
+    iconDanger,
+    iconLeft,
+    iconRight,
+  } = cleanPropNames(component.properties)
 
   let children: DevComponent['children'] = []
 
   if (component.name === 'Button') {
-    children = [Label]
+    children = [label]
   } else if (component.name === 'Icon Button') {
-    if (Position === 'Left') {
+    if (position === 'Left') {
       children = [
-        renderIcon(Appearance === 'Danger' ? IconDanger! : IconLeft!),
-        Label,
+        renderIcon(appearance === 'Danger' ? iconDanger! : iconLeft!),
+        label,
       ]
-    } else if (Position === 'Right') {
-      children = [Label, renderIcon(IconRight!)]
+    } else if (position === 'Right') {
+      children = [label, renderIcon(iconRight!)]
     }
   } else if (component.name === 'Icon Only') {
-    children = [renderIcon(Appearance === 'Danger' ? IconDanger! : Icon!)]
+    children = [renderIcon(appearance === 'Danger' ? iconDanger! : icon!)]
   }
 
   return h(
     'KButton',
     {
-      appearance,
-      size,
-      disabled,
-      onClick: true,
+      appearance: toLowerCase(appearance),
+      size: toLowerCase(size),
+      disabled: state === 'Disabled',
+      onClick: () => {},
+    },
+    {
+      appearance: 'primary',
+      size: 'medium',
+      disabled: false,
     },
     children,
   )

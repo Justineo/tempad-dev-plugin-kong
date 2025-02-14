@@ -12,7 +12,7 @@ import { Card } from './card'
 import { Checkbox } from './checkbox'
 import { CodeBlock, CodeLine } from './code-block'
 import { Collapse } from './collapse'
-import { DatePicker } from './date-picker'
+import { DateTimePicker } from './date-time-picker'
 import { Dropdown } from './dropdown'
 import { EmptyState } from './empty-state'
 import { FileUpload } from './file-upload'
@@ -35,7 +35,7 @@ import { Toaster } from './toaster'
 import { InfoTooltip, Tooltip } from './tooltip'
 import { TreeList } from './tree-list'
 
-type RenderFn = (component: DesignComponent) => DevComponent
+type RenderFn = (component: DesignComponent<any>) => DevComponent<any>
 
 const componentMap: Record<string, RenderFn> = {
   Alert,
@@ -50,7 +50,7 @@ const componentMap: Record<string, RenderFn> = {
   CodeBlock,
   CodeLine,
   Collapse,
-  DatePicker,
+  DatePicker: DateTimePicker,
   Dropdown,
   EmptyState,
   FileUpload,

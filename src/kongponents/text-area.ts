@@ -1,33 +1,36 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { DesignComponent } from '@tempad-dev/plugins'
 import type {
   InputFieldProperties,
   InputFieldProps,
 } from './mixins/input-field'
-import { findOne, h } from '@tempad-dev/plugins'
+import { findOne } from '@tempad-dev/plugins'
 
+import { cleanPropNames, h } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
-export type InputProperties = InputFieldProperties
+export type TextareaProperties = InputFieldProperties
 
-export function TextArea(component: DesignComponent): DevComponent {
-  const { 'Show value': ShowValue, Placeholder } =
-    component.properties as InputProperties
-
-  const placeholder =
-    ShowValue === 'True' ? undefined : Placeholder || undefined
+export function TextArea(component: DesignComponent<TextareaProperties>) {
+  const { showValue, placeholder } = cleanPropNames(component.properties)
 
   const inputFieldProps: InputFieldProps = getInputFieldProps(component)
 
   const resizer = findOne<DesignComponent>(component, {
     type: 'INSTANCE',
     name: 'Parts/.Resize',
+    visible: true,
   })
-  const resizable = resizer?.visible ? true : undefined
 
-  return h('KTextArea', {
-    'v-model': 'value',
-    placeholder,
-    resizable,
-    ...inputFieldProps,
-  })
+  return h(
+    'KTextArea',
+    {
+      'v-model': 'value',
+      placeholder: showValue === 'True' ? undefined : placeholder,
+      resizable: !!resizer,
+      ...inputFieldProps,
+    },
+    {
+      resizable: false,
+    },
+  )
 }

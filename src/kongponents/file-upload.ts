@@ -1,53 +1,46 @@
-import type {
-  DesignComponent,
-  DevComponent,
-  FrameNode,
-} from '@tempad-dev/plugins'
+import type { DesignComponent, FrameNode } from '@tempad-dev/plugins'
 import type { ButtonProperties } from './button'
 import type { InputFieldProperties } from './mixins/input-field'
-import { findChild, h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import { findChild } from '@tempad-dev/plugins'
+import { cleanPropNames, h, renderIcon, renderSlot } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type FileUploadProperties = {
-  Placeholder: never
   'Show icon left': boolean
   'Icon left'?: DesignComponent
 } & InputFieldProperties
 
-export function FileUpload(component: DesignComponent): DevComponent {
-  const {
-    'Show value': ShowValue,
-    Placeholder,
-    'Show icon left': ShowIconLeft,
-    'Icon left': IconLeft,
-  } = component.properties as FileUploadProperties
+export function FileUpload(component: DesignComponent<FileUploadProperties>) {
+  const { showValue, placeholder, showIconLeft, iconLeft } = cleanPropNames(
+    component.properties,
+  )
 
-  const placeholder = ShowValue === 'True' ? undefined : Placeholder
-
-  const icon = ShowIconLeft && IconLeft ? renderIcon(IconLeft) : undefined
+  const icon = showIconLeft && iconLeft ? renderIcon(iconLeft) : undefined
   const input = findChild<FrameNode>(component, {
     type: 'FRAME',
     name: 'input',
+    visible: true,
   })
   const button = input
-    ? findChild<DesignComponent>(input, { type: 'INSTANCE', name: 'Button' })
+    ? findChild<DesignComponent<ButtonProperties>>(input, {
+        type: 'INSTANCE',
+        name: 'Button',
+        visible: true,
+      })
     : undefined
-  const buttonText = button
-    ? (button.properties as ButtonProperties).Label
-    : undefined
-
+  const buttonText = button ? button.properties.Label : undefined
   const inputFieldProps = getInputFieldProps(component)
 
   return h(
     'KFileUpload',
     {
-      placeholder,
+      placeholder: showValue === 'True' ? undefined : placeholder,
       buttonText: buttonText !== 'Select file' ? buttonText : undefined,
       ...inputFieldProps,
       onFileAdded: 'files => {}',
       onFileRemoved: 'files => {}',
     },
-    icon ? [h('template', { '#icon': true }, [icon])] : undefined,
+    {},
+    [...(icon ? [renderSlot('icon', [icon])] : [])],
   )
 }

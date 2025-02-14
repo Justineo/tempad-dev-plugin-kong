@@ -1,45 +1,40 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { DesignComponent } from '@tempad-dev/plugins'
 import type {
   InputFieldProperties,
-  InputFieldProps,
   InputFieldState,
 } from './mixins/input-field'
-import { h } from '@tempad-dev/plugins'
 
-import { renderIcon } from '../utils'
+import { cleanPropNames, h, renderIcon, renderSlot } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type InputProperties = {
-  State: InputFieldState | 'Readonly'
+  State: InputFieldState
   'Show icon left': boolean
   'Icon left'?: DesignComponent
   'Show icon right': boolean
   'Icon right'?: DesignComponent
 } & Omit<InputFieldProperties, 'State'>
 
-export function Input(component: DesignComponent): DevComponent {
+export function Input(component: DesignComponent<InputProperties>) {
   const {
-    State,
-    'Show value': ShowValue,
-    Placeholder,
-    'Show icon left': ShowIconLeft,
-    'Icon left': IconLeft,
-    'Show icon right': ShowIconRight,
-    'Icon right': IconRight,
-  } = component.properties as InputProperties
-
-  const placeholder =
-    ShowValue === 'True' ? undefined : Placeholder || undefined
+    state,
+    showValue,
+    placeholder,
+    showIconLeft,
+    iconLeft,
+    showIconRight,
+    iconRight,
+  } = cleanPropNames(component.properties)
 
   const beforeSlot =
-    ShowIconLeft && IconLeft
-      ? h('template', { '#before': true }, [renderIcon(IconLeft)])
+    showIconLeft && iconLeft
+      ? renderSlot('before', [renderIcon(iconLeft)])
       : undefined
 
   const afterSlot =
-    ShowIconRight && IconRight
-      ? h('template', { '#after': true }, [
-          renderIcon(IconRight, {
+    showIconRight && iconRight
+      ? renderSlot('after', [
+          renderIcon(iconRight, {
             role: 'button',
             tabindex: '0',
             onClick: true,
@@ -47,11 +42,11 @@ export function Input(component: DesignComponent): DevComponent {
         ])
       : undefined
 
-  const inputFieldProps: InputFieldProps = getInputFieldProps(component)
+  const inputFieldProps = getInputFieldProps(component)
 
   const isPasswordLabel = inputFieldProps.label === 'Password'
   const hasVisibilityIcon =
-    IconRight?.name === 'visibility' || IconRight?.name === 'visibility-off'
+    iconRight?.name === 'visibility' || iconRight?.name === 'visibility-off'
   const type = isPasswordLabel || hasVisibilityIcon ? 'password' : undefined
 
   return h(
@@ -59,10 +54,14 @@ export function Input(component: DesignComponent): DevComponent {
     {
       'v-model': 'value',
       type,
-      showPasswordMaskToggle: hasVisibilityIcon || undefined,
-      placeholder,
+      showPasswordMaskToggle: hasVisibilityIcon,
+      placeholder: showValue === 'True' ? undefined : placeholder,
       ...inputFieldProps,
-      readonly: State === 'Readonly' || undefined,
+      readonly: state === 'Readonly',
+    },
+    {
+      showPasswordMaskToggle: false,
+      readonly: false,
     },
     [beforeSlot, afterSlot].filter((t) => t != null),
   )

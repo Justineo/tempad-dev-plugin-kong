@@ -1,12 +1,13 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { DesignComponent } from '@tempad-dev/plugins'
+import type { BooleanVariant } from '../types'
+import type { LabelProperties } from './label'
 import type {
+  HelpTextProperties,
   InputFieldProperties,
-  InputFieldProps,
   InputFieldState,
 } from './mixins/input-field'
-import type { BooleanVariant } from './shared-types'
-import { findChild, findOne, h } from '@tempad-dev/plugins'
-import { pruneUndefined, renderIcon } from '../utils'
+import { findChild, findOne } from '@tempad-dev/plugins'
+import { h, pick, renderIcon } from '../utils'
 import { getInputFieldProps } from './mixins/input-field'
 
 export type RadioProperties = {
@@ -16,25 +17,30 @@ export type RadioProperties = {
   Selected: BooleanVariant
 } & InputFieldProperties
 
-export function Radio(component: DesignComponent): DevComponent {
-  const {
-    required,
-    label,
-    labelAttributes,
-    ...inputFieldProps
-  }: InputFieldProps = getInputFieldProps(component, {
-    help: 'description',
-  })
+export function Radio(component: DesignComponent<RadioProperties>) {
+  const { required, label, labelAttributes, ...inputFieldProps } =
+    getInputFieldProps(component, {
+      help: 'description',
+    })
 
-  return h('KRadio', {
-    'v-model': 'checked',
-    label,
-    labelAttributes: pruneUndefined({
-      ...labelAttributes,
-      required,
-    }),
-    ...inputFieldProps,
-  })
+  return h(
+    'KRadio',
+    {
+      'v-model': 'checked',
+      label,
+      labelAttributes: pick(
+        {
+          ...labelAttributes,
+          required,
+        },
+        {
+          required: false,
+        },
+      ),
+      ...inputFieldProps,
+    },
+    {},
+  )
 }
 
 export type RadioCardProperties = {
@@ -42,13 +48,16 @@ export type RadioCardProperties = {
   State: InputFieldState
 }
 
-export function RadioCard(component: DesignComponent): DevComponent {
-  const icon = findChild<DesignComponent>(component, { type: 'INSTANCE' })
-  const label = findOne<DesignComponent>(component, {
+export function RadioCard(component: DesignComponent<RadioCardProperties>) {
+  const icon = findChild<DesignComponent>(component, {
+    type: 'INSTANCE',
+    visible: true,
+  })
+  const label = findOne<DesignComponent<LabelProperties>>(component, {
     type: 'INSTANCE',
     name: 'Label',
   })
-  const help = findOne<DesignComponent>(component, {
+  const help = findOne<DesignComponent<HelpTextProperties>>(component, {
     type: 'INSTANCE',
     name: 'Help Text',
   })
@@ -57,10 +66,11 @@ export function RadioCard(component: DesignComponent): DevComponent {
     'KRadio',
     {
       'v-model': 'checked',
-      label: label?.properties.Label || undefined,
-      description: help?.properties.Text || undefined,
+      label: label?.properties.Label,
+      description: help?.properties.Text,
       cardRadioVisible: false, // Design component only support this style
     },
+    {},
     icon ? [renderIcon(icon)] : [],
   )
 }

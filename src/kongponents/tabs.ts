@@ -1,11 +1,19 @@
+import type { Tab } from '@kong/kongponents'
 import type {
   DesignComponent,
   DevComponent,
   TextNode,
 } from '@tempad-dev/plugins'
-import type { BasicState, BooleanVariant } from './shared-types'
-import { findAll, findChild, h } from '@tempad-dev/plugins'
-import { pruneUndefined, renderIcon, toKebabCase } from '../utils'
+import type { BasicState, BooleanVariant } from '../types'
+import { findAll, findChild } from '@tempad-dev/plugins'
+import {
+  cleanPropNames,
+  h,
+  pick,
+  renderIcon,
+  renderSlot,
+  toKebabCase,
+} from '../utils'
 
 export type TabsProperties = {
   Padding: BooleanVariant
@@ -18,41 +26,41 @@ export type TabProperties = {
   'Show count': boolean
 }
 
-export function Tabs(component: DesignComponent): DevComponent {
-  const children = findAll<DesignComponent>(component, {
+export function Tabs(component: DesignComponent<TabsProperties>) {
+  const children = findAll<DesignComponent<TabProperties>>(component, {
     type: 'INSTANCE',
     name: 'Tab',
+    visible: true,
   })
 
-  const slots: DevComponent[] = []
-  const tabs: { title?: string; hash: string; disabled?: boolean }[] = []
+  const slots: DevComponent['children'] = []
+
+  const tabs: Tab[] = []
 
   children.forEach((child) => {
-    const {
-      State,
-      'Show icon': ShowIcon,
-      Icon,
-    } = child.properties as TabProperties
+    const { state, showIcon, icon } = cleanPropNames(child.properties)
 
-    const disabled = State === 'Disabled' ? true : undefined
     const title =
       findChild<TextNode>(child, { type: 'TEXT', name: 'label' })?.characters ||
       ''
 
     const hash = toKebabCase(title)
 
-    if (ShowIcon && Icon) {
-      slots.push(
-        h('template', { [`#${hash}-anchor`]: true }, [renderIcon(Icon), title]),
-      )
+    if (showIcon && icon) {
+      slots.push(renderSlot(`${hash}-anchor`, [renderIcon(icon), title]))
     }
 
     tabs.push(
-      pruneUndefined({
-        title: title || undefined,
-        hash: `#${hash}`,
-        disabled,
-      }),
+      pick(
+        {
+          title: title || undefined,
+          hash: `#${hash}`,
+          disabled: state === 'Disabled',
+        },
+        {
+          disabled: false,
+        },
+      ),
     )
   })
 
@@ -62,6 +70,7 @@ export function Tabs(component: DesignComponent): DevComponent {
       'v-model': 'tabs',
       tabs,
     },
+    {},
     slots,
   )
 }

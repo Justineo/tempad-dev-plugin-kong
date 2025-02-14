@@ -1,7 +1,12 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import type { ContextualAppearance } from './shared-types'
-import { h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import type { DesignComponent } from '@tempad-dev/plugins'
+import type { ContextualAppearance } from '../types'
+import {
+  cleanPropNames,
+  h,
+  renderIcon,
+  renderSlot,
+  toLowerCase,
+} from '../utils'
 
 export type BadgeProperties = {
   Appearance: ContextualAppearance | 'Neutral' | 'Decorative'
@@ -13,31 +18,30 @@ export type BadgeProperties = {
   Size: 'Default' | 'Small'
 }
 
-export function Badge(component: DesignComponent): DevComponent {
+export function Badge(component: DesignComponent<BadgeProperties>) {
   const {
-    Appearance,
-    'Show icon left': ShowIconLeft,
-    'Icon left': IconLeft,
-    'Show icon right': ShowIconRight,
-    'Icon right': IconRight,
-    Label,
-  } = component.properties as BadgeProperties
-  const appearance = {
-    Info: undefined, // default
-    Success: 'success',
-    Warning: 'warning',
-    Danger: 'danger',
-    Neutral: 'neutral',
-    Decorative: 'decorative',
-  }[Appearance]
+    appearance,
+    showIconLeft,
+    iconLeft,
+    showIconRight,
+    iconRight,
+    label,
+  } = cleanPropNames(component.properties)
 
-  const iconBefore = ShowIconRight && !ShowIconLeft ? false : undefined
-  const Icon = ShowIconLeft ? IconLeft : ShowIconRight ? IconRight : undefined
+  const icon = showIconLeft ? iconLeft : showIconRight ? iconRight : undefined
 
-  return h('Badge', { appearance, iconBefore }, [
-    Label,
-    ...(Icon ? [h('template', { '#icon': true }, [renderIcon(Icon)])] : []),
-  ])
+  return h(
+    'KBadge',
+    {
+      appearance: toLowerCase(appearance),
+      iconBefore: showIconLeft && !showIconRight,
+    },
+    {
+      appearance: 'info',
+      iconBefore: true,
+    },
+    [label, ...(icon ? [renderSlot('icon', [renderIcon(icon)])] : [])],
+  )
 }
 
 export type MethodBadgeProperties = {
@@ -54,27 +58,17 @@ export type MethodBadgeProperties = {
     | 'Custom'
 }
 
-export function MethodBadge(component: DesignComponent): DevComponent {
-  const { Method } = component.properties as MethodBadgeProperties
+export function MethodBadge(component: DesignComponent<MethodBadgeProperties>) {
+  const { properties } = component
 
-  const appearance = {
-    Get: 'get',
-    Post: 'post',
-    Put: 'put',
-    Delete: 'delete',
-    Patch: 'patch',
-    Options: 'options',
-    Head: 'head',
-    Connect: 'connect',
-    Trace: 'trace',
-    Custom: 'custom',
-  }[Method]
+  const { method } = cleanPropNames(properties)
 
   return h(
     'KBadge',
     {
-      appearance,
+      appearance: toLowerCase(method),
     },
-    Method ? [Method] : [],
+    {},
+    method ? [method] : [],
   )
 }

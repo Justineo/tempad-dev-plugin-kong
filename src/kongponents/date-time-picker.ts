@@ -1,5 +1,5 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import { h } from '@tempad-dev/plugins'
+import type { DesignComponent } from '@tempad-dev/plugins'
+import { cleanPropNames, h } from '../utils'
 
 export type DateTimePickerProperties = {
   Appearance:
@@ -14,8 +14,10 @@ export type DateTimePickerProperties = {
     | 'Relative date'
 }
 
-export function DatePicker(component: DesignComponent): DevComponent {
-  const { Appearance } = component.properties as DateTimePickerProperties
+export function DateTimePicker(
+  component: DesignComponent<DateTimePickerProperties>,
+) {
+  const { appearance } = cleanPropNames(component.properties)
 
   const mode = {
     Default: 'date',
@@ -28,13 +30,19 @@ export function DatePicker(component: DesignComponent): DevComponent {
     'Custom date': 'relativeDate',
     'Custom date and time': 'relativeDateTime',
     'Relative date': 'relativeDate',
-  }[Appearance]
+  }[appearance]
 
-  const range = Appearance.startsWith('Range') || undefined
+  const range = appearance.startsWith('Range') || undefined
 
-  return h('KDateTimePicker', {
-    'v-model': 'currentValue',
-    mode,
-    range,
-  })
+  return h(
+    'KDateTimePicker',
+    {
+      'v-model': 'currentValue',
+      mode,
+      range,
+    },
+    {
+      range: false,
+    },
+  )
 }

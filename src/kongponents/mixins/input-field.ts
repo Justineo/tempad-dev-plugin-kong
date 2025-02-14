@@ -1,8 +1,9 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import type { LabelProps } from '../label'
-import type { BasicState, BooleanVariant } from '../shared-types'
+import type { BasicState, BooleanVariant } from '../../types'
+import type { LabelProperties, LabelProps } from '../label'
+import { mapKeys } from '@s-libs/micro-dash'
 import { findOne } from '@tempad-dev/plugins'
-import { mapKey, pruneUndefined } from '../../utils'
+import { cleanPropNames, pick } from '../../utils'
 import { Label } from '../label'
 
 export type InputFieldState = BasicState | 'Error'
@@ -22,60 +23,81 @@ export type HelpTextProperties = {
 
 export type InputFieldProps = {
   label?: string
-  labelAttributes?: Record<string, unknown>
+  labelAttributes?: LabelProps
   required?: boolean
   help?: string
   error?: boolean
   disabled?: boolean
 }
 
-export function getInputFieldProps(
-  component: DesignComponent,
-  keyMapping?: Parameters<typeof mapKey>[1],
-): DevComponent['props'] {
-  const {
-    State,
-    'Show label': ShowLabel,
-    'Show help text': ShowHelpText,
-  } = component.properties as InputFieldProperties
+export type KeyMapping = {
+  [K in keyof InputFieldProps]?: string
+}
+
+export type MapName<T, M extends Partial<Record<keyof T, string>>> = {
+  [K in keyof T as K extends keyof M ? Extract<M[K], string> : K]: T[K]
+}
+
+// eslint-disable-next-line ts/no-empty-object-type
+export function getInputFieldProps<T extends KeyMapping = {}>(
+  component: DesignComponent<InputFieldProperties>,
+  keyMapping?: T,
+): MapName<InputFieldProps, T> {
+  const { state, showLabel, showHelpText } = cleanPropNames(
+    component.properties,
+  )
 
   let help: string | undefined
-  let label: DevComponent | undefined
+  let label: DevComponent<LabelProps> | undefined
 
-  const labelInstance = findOne<DesignComponent>(component, {
+  const labelNode = findOne<DesignComponent<LabelProperties>>(component, {
     type: 'INSTANCE',
     name: 'Label',
+    visible: true,
   })
-  if (ShowLabel && labelInstance) {
-    label = Label(labelInstance)
+
+  if (showLabel && labelNode) {
+    label = Label(labelNode)
   }
 
-  const helpTextInstance = findOne<DesignComponent>(
-    component,
-    (node) =>
-      node.type === 'INSTANCE' &&
-      ['Parts/.Help Text', 'Help text'].includes(node.name),
+  const helpTextNode = findOne<DesignComponent<HelpTextProperties>>(component, {
+    type: 'INSTANCE',
+    name: ['Parts/.Help Text', 'Help text'],
+    visible: true,
+  })
+
+  if (showHelpText && helpTextNode) {
+    const { text } = cleanPropNames(helpTextNode.properties)
+    help = text
+  }
+
+  const { required, ...labelAttributes } = label ? label.props : {}
+
+  const props: InputFieldProps = pick(
+    {
+      label: label?.children[0] as string | undefined,
+      labelAttributes,
+      required,
+      help,
+      error: state === 'Error',
+      disabled: state === 'Disabled',
+    },
+    {
+      required: false,
+      error: false,
+      disabled: false,
+    },
   )
-  if (ShowHelpText && helpTextInstance) {
-    const { Text } = helpTextInstance.properties as HelpTextProperties
 
-    if (Text) {
-      help = Text
-    }
+  if (keyMapping) {
+    return mapKeys(props, (_, key) => {
+      if (key in keyMapping) {
+        const mappedKey = keyMapping[key]
+        return mappedKey ?? key
+      }
+      return key
+    }) as any
   }
 
-  const { required, ...labelAttributes } = label
-    ? (label.props as LabelProps)
-    : {}
-
-  const props: InputFieldProps = {
-    label: label ? (label.children[0] as string) : undefined,
-    labelAttributes: pruneUndefined(labelAttributes),
-    required,
-    help,
-    error: State === 'Error' ? true : undefined,
-    disabled: State === 'Disabled' ? true : undefined,
-  }
-
-  return keyMapping ? mapKey(props, keyMapping) : props
+  return props as any
 }

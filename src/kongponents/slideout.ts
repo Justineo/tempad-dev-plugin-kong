@@ -1,19 +1,15 @@
-import type {
-  DesignComponent,
-  DevComponent,
-  FrameNode,
-  TextNode,
-} from '@tempad-dev/plugins'
+import type { DesignComponent, FrameNode, TextNode } from '@tempad-dev/plugins'
+import type { TabsProperties } from './tabs'
 import { findChild, findOne, h } from '@tempad-dev/plugins'
-import { LOREM_IPSUM_TEXT } from '../utils'
+import { cleanPropNames, LOREM_IPSUM_TEXT } from '../utils'
 import { Tabs } from './tabs'
 
 export type SlideoutProperties = {
   'Show tabs': boolean
 }
 
-export function Slideout(component: DesignComponent): DevComponent {
-  const { 'Show tabs': ShowTabs } = component.properties as SlideoutProperties
+export function Slideout(component: DesignComponent<SlideoutProperties>) {
+  const { showTabs } = cleanPropNames(component.properties)
 
   const header = findChild<FrameNode>(component, {
     type: 'FRAME',
@@ -21,15 +17,22 @@ export function Slideout(component: DesignComponent): DevComponent {
   })
 
   const titleNode =
-    header && findChild<FrameNode>(header, { type: 'FRAME', name: 'title' })
-  const title = (titleNode && findOne<TextNode>(titleNode, { type: 'TEXT' }))
-    ?.characters
+    header &&
+    findChild<FrameNode>(header, {
+      type: 'FRAME',
+      name: 'title',
+      visible: true,
+    })
+  const title = (
+    titleNode && findOne<TextNode>(titleNode, { type: 'TEXT', visible: true })
+  )?.characters
 
   const tabs =
-    (ShowTabs &&
-      findOne<DesignComponent>(component, {
+    (showTabs &&
+      findOne<DesignComponent<TabsProperties>>(component, {
         type: 'INSTANCE',
         name: 'Tabs',
+        visible: true,
       })) ||
     null
 

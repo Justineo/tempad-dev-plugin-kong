@@ -1,20 +1,17 @@
-import type {
-  DesignComponent,
-  DevComponent,
-  TextNode,
-} from '@tempad-dev/plugins'
-import { findAll, h } from '@tempad-dev/plugins'
-import { pruneUndefined } from '../utils'
+import type { StepperState } from '@kong/kongponents'
+import type { DesignComponent, TextNode } from '@tempad-dev/plugins'
+import { findAll } from '@tempad-dev/plugins'
+import { cleanPropNames, h, pick } from '../utils'
 
 export type StepperProperties = {
   Steps: '2' | '3' | '4' | '5'
 }
 
-type StepIconProperties = {
+export type StepIconProperties = {
   Appearance: 'Inactive' | 'Active' | 'Complete' | 'Loading' | 'Error'
 }
 
-const StateMap: Record<StepIconProperties['Appearance'], string> = {
+const stateMap: Record<StepIconProperties['Appearance'], StepperState> = {
   Inactive: 'default',
   Active: 'active',
   Complete: 'completed',
@@ -22,27 +19,37 @@ const StateMap: Record<StepIconProperties['Appearance'], string> = {
   Error: 'error',
 }
 
-export function Stepper(component: DesignComponent): DevComponent {
-  const icons = findAll<DesignComponent>(component, {
+export function Stepper(component: DesignComponent<StepperProperties>) {
+  const icons = findAll<DesignComponent<StepIconProperties>>(component, {
     type: 'INSTANCE',
     name: 'Parts/.Step Icon',
   })
 
-  const steps = findAll<TextNode>(
-    component,
-    (node) => node.type === 'TEXT' && node.name.startsWith('Step'),
-  ).map((label, i) => {
+  const steps = findAll<TextNode>(component, {
+    type: 'TEXT',
+    name: /^Step/,
+    visible: true,
+  }).map((label, i) => {
     const icon = icons[i]
-    const { Appearance } = icon.properties as StepIconProperties
-    const state = StateMap[Appearance]
+    const { appearance } = cleanPropNames(icon.properties)
+    const state = stateMap[appearance]
 
-    return pruneUndefined({
-      label: label.characters,
-      state: state === 'default' ? undefined : state,
-    })
+    return pick(
+      {
+        label: label.characters,
+        state,
+      },
+      {
+        state: 'default',
+      } as const,
+    )
   })
 
-  return h('KStepper', {
-    steps,
-  })
+  return h(
+    'KStepper',
+    {
+      steps,
+    },
+    {},
+  )
 }

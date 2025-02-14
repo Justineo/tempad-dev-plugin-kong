@@ -1,7 +1,13 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
 import type { ButtonProperties } from './button'
-import { findOne, h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import { findOne } from '@tempad-dev/plugins'
+import {
+  cleanPropNames,
+  h,
+  renderIcon,
+  renderSlot,
+  toLowerCase,
+} from '../utils'
 
 type ThemeVariant = 'Light' | 'Dark'
 
@@ -13,33 +19,23 @@ export type CodeBlockProperties = {
   'Show alt action': boolean
 }
 
-export function CodeBlock(component: DesignComponent): DevComponent {
-  const {
-    Theme,
-    'Show functions': ShowFunctions,
-    'Show copy': ShowCopy,
-    'Show alt action': ShowAltAction,
-  } = component.properties as CodeBlockProperties
+export function CodeBlock(component: DesignComponent<CodeBlockProperties>) {
+  const { theme, showFunctions, showCopy, showAltAction } = cleanPropNames(
+    component.properties,
+  )
 
-  const theme = {
-    Light: undefined, // default
-    Dark: 'dark',
-  }[Theme]
-
-  const searchable = ShowFunctions ? true : undefined
-  const showCopyButton = ShowCopy === false ? false : undefined
-
-  let secondary: DevComponent | undefined
+  const children: DevComponent['children'] = []
   let isCopy: boolean = false
-  const iconButton = findOne<DesignComponent>(component, {
+
+  const iconButton = findOne<DesignComponent<ButtonProperties>>(component, {
     type: 'INSTANCE',
     name: 'Icon Button',
   })
-  if (ShowAltAction && iconButton) {
-    const { 'Icon left': icon, Label: label } =
-      iconButton.properties as ButtonProperties
 
-    const secondaryChildren: (DevComponent | string)[] = []
+  if (showAltAction && iconButton) {
+    const { iconLeft: icon, label } = cleanPropNames(iconButton.properties)
+
+    const secondaryChildren: DevComponent['children'] = []
 
     if (icon) {
       if (icon.name === 'copy') {
@@ -51,22 +47,21 @@ export function CodeBlock(component: DesignComponent): DevComponent {
       secondaryChildren.push(label)
     }
     if (secondaryChildren.length > 0) {
-      secondary = h(
-        'template',
-        {
-          '#secondary-actions': true,
-        },
-        [
+      children.push(
+        renderSlot('secondary-actions', [
           h(
-            'CodeBlockIconButton',
+            'KCodeBlockIconButton',
             {
-              theme,
+              theme: toLowerCase(theme),
               copyTooltip: isCopy ? 'Copy...' : undefined,
               onClick: '() => {}',
             },
+            {
+              theme: 'light',
+            },
             secondaryChildren,
           ),
-        ],
+        ]),
       )
     }
   }
@@ -76,12 +71,17 @@ export function CodeBlock(component: DesignComponent): DevComponent {
     {
       id: '...',
       ':code': 'code',
-      theme,
+      theme: toLowerCase(theme),
       language: 'json',
-      searchable,
-      showCopyButton,
+      searchable: showFunctions,
+      showCopyButton: showCopy,
     },
-    secondary ? [secondary] : [],
+    {
+      theme: 'light',
+      searchable: false,
+      showCopyButton: true,
+    },
+    children,
   )
 }
 
@@ -89,17 +89,18 @@ export type CodeLineProperties = {
   Theme: ThemeVariant
 }
 
-export function CodeLine(component: DesignComponent): DevComponent {
-  const { Theme } = component.properties as CodeLineProperties
+export function CodeLine(component: DesignComponent<CodeLineProperties>) {
+  const { theme } = cleanPropNames(component.properties)
 
-  const theme = {
-    Light: undefined, // default
-    Dark: 'dark',
-  }[Theme]
-
-  return h('CodeBlock', {
-    ':code': 'code',
-    theme,
-    singleLine: true,
-  })
+  return h(
+    'KCodeBlock',
+    {
+      ':code': 'code',
+      theme: toLowerCase(theme),
+      singleLine: true,
+    },
+    {
+      theme: 'light',
+    },
+  )
 }

@@ -1,36 +1,41 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import { findAll, findChild, h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import type { DesignComponent } from '@tempad-dev/plugins'
+import { findAll, findChild } from '@tempad-dev/plugins'
+import { cleanPropNames, h, renderIcon, renderSlot } from '../utils'
 
-type TreeListItemProperties = {
+// eslint-disable-next-line ts/no-empty-object-type
+export type TreeListProperties = {}
+
+export type TreeListItemProperties = {
   Icon: DesignComponent
   Label: string
 }
 
-export function TreeList(component: DesignComponent): DevComponent {
-  const items = findAll<DesignComponent>(component, {
+export function TreeList(component: DesignComponent<TreeListProperties>) {
+  const items = findAll<DesignComponent<TreeListItemProperties>>(component, {
     type: 'INSTANCE',
     name: 'Parts/.List Item',
+    visible: true,
   })
 
   const iconNodes = items.map((item) => {
-    return findChild<DesignComponent>(item, { type: 'INSTANCE', name: 'Icon' })
+    return findChild<DesignComponent>(item, {
+      type: 'INSTANCE',
+      name: 'Icon',
+      visible: true,
+    })
   })
 
   const icons = items.map((item) => {
-    const { Icon } = item.properties as TreeListItemProperties
-    return Icon
+    return cleanPropNames(item.properties).icon
   })
 
   const dedupedIcons = [
     ...new Map(icons.map((icon) => [icon.name, icon])).values(),
   ]
 
-  const iconSlot = h(
-    'template',
-    {
-      '#item-icon': '{ item }',
-    },
+  const iconSlot = renderSlot(
+    'item-icon',
+    '{ item }',
     dedupedIcons.map((icon, i) => {
       const condition =
         dedupedIcons.length === 1
@@ -51,7 +56,10 @@ export function TreeList(component: DesignComponent): DevComponent {
     'KTreeList',
     {
       ':items': 'items',
-      hideIcons: iconNodes.length === 0 || undefined,
+      hideIcons: iconNodes.length === 0,
+    },
+    {
+      hideIcons: false,
     },
     dedupedIcons.length === 1 && dedupedIcons[0].name === 'document'
       ? []

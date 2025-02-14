@@ -1,5 +1,6 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import { findChild, h } from '@tempad-dev/plugins'
+import type { DesignComponent } from '@tempad-dev/plugins'
+import { findChild } from '@tempad-dev/plugins'
+import { cleanPropNames, h } from '../utils'
 
 export type LabelProperties = {
   Label: string
@@ -20,41 +21,42 @@ export type LabelProps = {
   required?: boolean
 }
 
-export function Label(component: DesignComponent): DevComponent {
-  const {
-    Label,
-    'Show required': ShowRequired,
-    'Show tooltip': ShowInfoTooltip,
-  } = component.properties as LabelProperties
+export function Label(component: DesignComponent<LabelProperties>) {
+  const { label, showRequired, showTooltip } = cleanPropNames(
+    component.properties,
+  )
 
   const props: LabelProps = {}
 
-  if (ShowRequired) {
+  if (showRequired) {
     props.required = true
   }
 
-  const infoTooltip = findChild<DesignComponent>(component, {
-    type: 'INSTANCE',
-    name: 'Tooltip',
-  })
-  if (ShowInfoTooltip && infoTooltip) {
-    props.info = '...'
-
-    const { 'Show tooltip': ShowTooltip } =
-      infoTooltip.properties as InfoTooltipProperties
-
-    const tooltip = findChild<DesignComponent>(infoTooltip, {
+  const infoTooltip = findChild<DesignComponent<InfoTooltipProperties>>(
+    component,
+    {
       type: 'INSTANCE',
       name: 'Tooltip',
-    })
-    if (ShowTooltip && tooltip) {
-      const { Text } = tooltip.properties as TooltipProperties
+      visible: true,
+    },
+  )
 
-      if (Text) {
-        props.info = Text
-      }
+  if (showTooltip && infoTooltip) {
+    props.info = '...'
+
+    const { showTooltip } = cleanPropNames(infoTooltip.properties)
+
+    const tooltip = findChild<DesignComponent<TooltipProperties>>(infoTooltip, {
+      type: 'INSTANCE',
+      name: 'Tooltip',
+      visible: true,
+    })
+
+    if (showTooltip && tooltip) {
+      const { text } = cleanPropNames(tooltip.properties)
+      props.info = text
     }
   }
 
-  return h('KLabel', props, [Label])
+  return h('KLabel', props, { required: false }, [label])
 }

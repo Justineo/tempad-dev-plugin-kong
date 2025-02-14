@@ -1,55 +1,70 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import type { BooleanVariant } from './shared-types'
-import { findChildren, h } from '@tempad-dev/plugins'
-import { pruneUndefined, renderIcon } from '../utils'
+import type { BooleanVariant, KDropdownProps } from '../types'
+import { findChildren } from '@tempad-dev/plugins'
+
+import { cleanPropNames, h, pick, renderIcon, renderSlot } from '../utils'
 
 export type DropdownOptionProperties = {
-  State: string
+  State: 'Default' | 'Hover' | 'Selected' | 'Focus' | 'Disabled' | 'Danger'
   'Show left icon': boolean
   'Left icon'?: DesignComponent
   Label: string
   'Show badge': BooleanVariant
 }
 
-export function Dropdown(component: DesignComponent): DevComponent {
-  const options = findChildren<DesignComponent>(component, {
-    type: 'INSTANCE',
-    name: 'Dropdown Option',
-  })
+// eslint-disable-next-line ts/no-empty-object-type
+export type DropdownProperties = {}
+
+export function Dropdown(component: DesignComponent<DropdownProperties>) {
+  const options = findChildren<DesignComponent<DropdownOptionProperties>>(
+    component,
+    {
+      type: 'INSTANCE',
+      name: 'Dropdown Option',
+      visible: true,
+    },
+  )
 
   const items = options.map((option) => {
-    const {
-      State,
-      'Show left icon': ShowLeftIcon,
-      'Left icon': LeftIcon,
-      Label,
-    } = option.properties as DropdownOptionProperties
+    const { state, showLeftIcon, leftIcon, label } = cleanPropNames(
+      option.properties,
+    )
 
-    const selected = State === 'Selected' ? true : undefined
-    const disabled = State === 'Disabled' ? true : undefined
-    const danger = State === 'Danger' ? true : undefined
+    const icon = showLeftIcon && leftIcon ? renderIcon(leftIcon) : undefined
 
-    const icon = ShowLeftIcon && LeftIcon ? renderIcon(LeftIcon) : undefined
-
-    return pruneUndefined({
-      label: Label,
-      selected,
-      disabled,
-      danger,
-      icon,
-    })
+    return pick(
+      {
+        label,
+        selected: state === 'Selected',
+        disabled: state === 'Disabled',
+        danger: state === 'Danger',
+        icon,
+      },
+      {
+        selected: false,
+        disabled: false,
+        danger: false,
+      },
+    )
   })
 
   // if any item has `icon`, we need to use `items` slot instead of the `items` prop
   if (items.some((item) => item.icon)) {
-    return h('KDropdown', {}, [
-      h('template', { '#items': true }, [
+    return h('KDropdown', {}, {}, [
+      renderSlot('items', [
         ...items.map(({ icon, label, ...item }) => {
-          return h('KDropdownItem', item, icon ? [icon, label] : [label])
+          const children: DevComponent['children'] = []
+          if (icon) {
+            children.push(icon)
+          }
+          if (label) {
+            children.push(label)
+          }
+          return h('KDropdownItem', item, {}, children)
         }),
       ]),
     ])
   }
 
-  return h('KDropdown', { items })
+  return h('KDropdown', { items: items as KDropdownProps['items'] }, {})
 }

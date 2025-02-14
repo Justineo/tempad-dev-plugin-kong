@@ -1,11 +1,11 @@
+import type { DesignComponent, TextNode } from '@tempad-dev/plugins'
 import type {
-  DesignComponent,
-  DevComponent,
-  TextNode,
-} from '@tempad-dev/plugins'
-import type { BasicState, BooleanVariant } from './shared-types'
-import { findChild, findChildren, h } from '@tempad-dev/plugins'
-import { pruneUndefined, toKebabCase } from '../utils'
+  BasicState,
+  BooleanVariant,
+  KSegmentedControlProps,
+} from '../types'
+import { findChild, findChildren } from '@tempad-dev/plugins'
+import { cleanPropNames, h, toKebabCase, toLowerCase } from '../utils'
 
 export type SegmentedControlProperties = {
   Size: 'Default' | 'Large'
@@ -20,34 +20,33 @@ export type SegmentedControlOptionProperties = {
   'Show icon': boolean
 }
 
-export function SegmentedControl(component: DesignComponent): DevComponent {
-  const { Size } = component.properties as SegmentedControlProperties
+export function SegmentedControl(
+  component: DesignComponent<SegmentedControlProperties>,
+) {
+  const { size } = cleanPropNames(component.properties)
 
-  const size = {
-    Default: undefined, // default
-    Large: 'large',
-  }[Size]
-
-  const children = findChildren<DesignComponent>(component, {
+  const children = findChildren<
+    DesignComponent<SegmentedControlOptionProperties>
+  >(component, {
     type: 'INSTANCE',
     name: 'Control Option',
   })
 
-  const options = children.map((child) => {
-    const { State } = child.properties as SegmentedControlOptionProperties
+  const options: KSegmentedControlProps['options'] = children.map((child) => {
+    const { state } = cleanPropNames(child.properties)
 
-    const disabled = State === 'Disabled' ? true : undefined
+    const disabled = state === 'Disabled'
     const label =
       findChild<TextNode>(child, {
         type: 'TEXT',
         name: 'option',
       })?.characters || ''
 
-    return pruneUndefined({
+    return {
       label,
       value: toKebabCase(label),
       disabled,
-    })
+    }
   })
 
   const disabled = options.every((option) => option.disabled) || undefined
@@ -58,10 +57,14 @@ export function SegmentedControl(component: DesignComponent): DevComponent {
     })
   }
 
-  return h('KSegmentedControl', {
-    ':v-model': 'selected',
-    options,
-    size,
-    disabled,
-  })
+  return h(
+    'KSegmentedControl',
+    {
+      ':v-model': 'selected',
+      options,
+      size: toLowerCase(size),
+      disabled,
+    },
+    { size: 'default', disabled: false },
+  )
 }

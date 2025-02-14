@@ -1,10 +1,8 @@
-import type {
-  DesignComponent,
-  DevComponent,
-  TextNode,
-} from '@tempad-dev/plugins'
-import type { ContextualAppearance } from './shared-types'
-import { findOne, h } from '@tempad-dev/plugins'
+import type { DesignComponent, TextNode } from '@tempad-dev/plugins'
+import type { ContextualAppearance } from '../types'
+import { findOne } from '@tempad-dev/plugins'
+
+import { cleanPropNames, h, toLowerCase } from '../utils'
 
 export type AlertProperties = {
   Appearance: ContextualAppearance
@@ -14,35 +12,31 @@ export type AlertProperties = {
   'Show close'?: boolean
 }
 
-export function Alert(component: DesignComponent): DevComponent {
-  const {
-    Appearance,
-    'Show icon': ShowIcon,
-    'Show title': ShowTitle,
-    Title,
-    'Show close': ShowClose,
-  } = component.properties as AlertProperties
+export function Alert(component: DesignComponent<AlertProperties>) {
+  const { appearance, showIcon, showTitle, title, showClose } = cleanPropNames(
+    component.properties,
+  )
 
-  const appearance = {
-    Info: undefined, // default
-    Success: 'success',
-    Warning: 'warning',
-    Danger: 'danger',
-  }[Appearance]
-
-  const showIcon = ShowIcon ? true : undefined
-  const title = ShowTitle ? Title : undefined
-  const dismissible = ShowClose ? true : undefined
-  const onDismiss = ShowClose ? true : undefined
-
-  const desc = findOne<TextNode>(component, { type: 'TEXT', name: 'desc' })
-
-  return h('KAlert', {
-    appearance,
-    showIcon,
-    title,
-    message: desc?.characters,
-    dismissible,
-    onDismiss,
+  const desc = findOne<TextNode>(component, {
+    type: 'TEXT',
+    name: 'desc',
+    visible: true,
   })
+
+  return h(
+    'KAlert',
+    {
+      appearance: toLowerCase(appearance),
+      showIcon,
+      title: (showTitle && title) || undefined,
+      message: desc?.characters,
+      dismissible: showClose,
+      onDismiss: showClose ? () => {} : undefined,
+    },
+    {
+      appearance: 'info',
+      showIcon: false,
+      dismissible: false,
+    },
+  )
 }

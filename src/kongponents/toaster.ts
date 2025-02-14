@@ -1,5 +1,6 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import { h } from '@tempad-dev/plugins'
+import type { ToasterAppearance } from '@kong/kongponents'
+import type { DesignComponent } from '@tempad-dev/plugins'
+import { cleanPropNames, h } from '../utils'
 
 export type ToasterProperties = {
   Appearance: 'Info' | 'Success' | 'Warning' | 'Error' | 'System'
@@ -17,29 +18,33 @@ export type ToasterProperties = {
   'System desc'?: string
 }
 
-export function Toaster(component: DesignComponent): DevComponent {
-  const { 'Show title': ShowTitle, Appearance } =
-    component.properties as ToasterProperties
+export function Toaster(component: DesignComponent<ToasterProperties>) {
+  const { showTitle, appearance } = cleanPropNames(component.properties)
 
-  const appearance = {
+  const appearanceMap: Record<
+    ToasterProperties['Appearance'],
+    ToasterAppearance
+  > = {
     Info: 'info',
     Success: 'success',
     Warning: 'warning',
     Error: 'danger',
     System: 'system',
-  }[Appearance]
+  }
 
   const title =
-    (ShowTitle &&
-      (component.properties as ToasterProperties)[`${Appearance} title`]) ||
-    undefined
-  const message = (component.properties as ToasterProperties)[
-    `${Appearance} desc`
-  ]
+    (showTitle && component.properties[`${appearance} title`]) || undefined
+  const message = component.properties[`${appearance} desc`] || undefined
 
-  return h('KToaster', {
-    appearance: appearance === 'info' ? undefined : appearance,
-    title,
-    message,
-  })
+  return h(
+    'KToaster',
+    {
+      appearance: appearanceMap[appearance],
+      title,
+      message,
+    },
+    {
+      appearance: 'info',
+    },
+  )
 }

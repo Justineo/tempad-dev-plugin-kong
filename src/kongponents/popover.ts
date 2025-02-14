@@ -1,9 +1,6 @@
-import type {
-  DesignComponent,
-  DevComponent,
-  FrameNode,
-} from '@tempad-dev/plugins'
-import { findOne, h } from '@tempad-dev/plugins'
+import type { DesignComponent, FrameNode } from '@tempad-dev/plugins'
+import { findOne } from '@tempad-dev/plugins'
+import { cleanPropNames, h, renderSlot } from '../utils'
 
 export type PopoverProperties = {
   Position: 'Top' | 'Right' | 'Bottom' | 'Left'
@@ -12,21 +9,27 @@ export type PopoverProperties = {
   'Show button': boolean
 }
 
-export function Popover(component: DesignComponent): DevComponent {
-  const { Text, Heading } = component.properties as PopoverProperties
+export function Popover(component: DesignComponent<PopoverProperties>) {
+  const { text, heading } = cleanPropNames(component.properties)
 
-  const title = findOne<FrameNode>(component, { type: 'FRAME', name: 'title' })
+  const title = findOne<FrameNode>(component, {
+    type: 'FRAME',
+    name: 'title',
+    visible: true,
+  })
   const close = findOne<DesignComponent>(component, {
     type: 'INSTANCE',
     name: 'close',
+    visible: true,
   })
 
   return h(
-    'KPopover',
+    'KPop',
     {
-      title: (title && Heading) || undefined,
-      hideCloseIcon: !close || undefined,
+      title: (title && heading) || undefined,
+      hideCloseIcon: !close,
     },
-    [h('template', { '#content': true }, [Text])],
+    { hideCloseIcon: false },
+    [renderSlot('content', [text])],
   )
 }

@@ -1,7 +1,8 @@
 import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
+import type { KEmptyStateProps } from '../types'
 import type { ButtonProperties } from './button'
-import { findChildren, findOne, h } from '@tempad-dev/plugins'
-import { renderIcon } from '../utils'
+import { findChildren, findOne } from '@tempad-dev/plugins'
+import { cleanPropNames, h, renderIcon, renderSlot } from '../utils'
 import { Button } from './button'
 
 export type EmptyStateProperties = {
@@ -12,67 +13,61 @@ export type EmptyStateProperties = {
   'Show button': boolean
 }
 
-export function EmptyState(component: DesignComponent): DevComponent {
-  const {
-    'Show icon': ShowIcon,
-    Icon,
-    Title,
-    Description,
-    'Show button': ShowButton,
-  } = component.properties as EmptyStateProperties
+export function EmptyState(component: DesignComponent<EmptyStateProperties>) {
+  const { showIcon, icon, title, description, showButton } = cleanPropNames(
+    component.properties,
+  )
 
-  const button = findOne<DesignComponent>(component, {
+  const button = findOne<DesignComponent<ButtonProperties>>(component, {
     type: 'INSTANCE',
     name: 'Button',
   })
 
-  const title = Title || undefined
-  const message = Description || undefined
-
-  const { Appearance, Label, State } = button
-    ? (button.properties as ButtonProperties)
+  const { appearance, label, state } = button
+    ? cleanPropNames(button.properties)
     : {}
-  const useBuiltInButton = ShowButton && button && Appearance === 'Primary'
-  const actionButtonText = useBuiltInButton ? Label : undefined
-  const actionButtonVisible = ShowButton ? undefined : false
-  const actionButtonDisabled =
-    useBuiltInButton && State === 'Disabled' ? true : undefined
 
-  let iconVariant: string | undefined
-  let icon: DesignComponent | undefined
-  if (ShowIcon && Icon) {
+  const useBuiltInButton = showButton && button && appearance === 'Primary'
+
+  const actionButtonProps: Partial<KEmptyStateProps> = useBuiltInButton
+    ? {
+        actionButtonText: label,
+        actionButtonVisible: showButton,
+        actionButtonDisabled: useBuiltInButton && state === 'Disabled',
+      }
+    : {}
+
+  let iconVariant: KEmptyStateProps['iconVariant']
+  if (showIcon && icon) {
     iconVariant = {
       analytics: 'default',
       warning: 'error',
       search: 'search',
       kong: 'kong',
-    }[Icon.name]
+    }[icon.name] as KEmptyStateProps['iconVariant']
 
     if (iconVariant) {
       if (iconVariant === 'default') {
         iconVariant = undefined
       }
-    } else {
-      icon = Icon
     }
   }
 
-  const children: (DevComponent | string)[] = []
+  const children: DevComponent['children'] = []
 
-  if (icon) {
-    children.push(h('template', { '#icon': true }, [renderIcon(icon)]))
+  if (!iconVariant && icon) {
+    children.push(renderSlot('icon', [renderIcon(icon)]))
   }
 
-  if (ShowButton && !useBuiltInButton) {
-    const buttons = findChildren<DesignComponent>(
-      component,
-      (node) =>
-        node.type === 'INSTANCE' &&
-        ['Icon Only', 'Icon Button', 'Button'].includes(node.name),
-    )
+  if (showButton && !useBuiltInButton) {
+    const buttons = findChildren<DesignComponent<ButtonProperties>>(component, {
+      type: 'INSTANCE',
+      name: ['Icon Only', 'Icon Button', 'Button'],
+      visible: true,
+    })
 
     if (buttons) {
-      children.push(h('template', { '#action': true }, buttons.map(Button)))
+      children.push(renderSlot('action', buttons.map(Button)))
     }
   }
 
@@ -80,11 +75,13 @@ export function EmptyState(component: DesignComponent): DevComponent {
     'KEmptyState',
     {
       title,
-      message,
+      message: description,
       iconVariant,
-      actionButtonText,
-      actionButtonVisible,
-      actionButtonDisabled,
+      ...actionButtonProps,
+    },
+    {
+      actionButtonVisible: true,
+      actionButtonDisabled: false,
     },
     children,
   )

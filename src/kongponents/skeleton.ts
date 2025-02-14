@@ -1,20 +1,32 @@
-import type { DesignComponent, DevComponent } from '@tempad-dev/plugins'
-import { h } from '@tempad-dev/plugins'
+import type { DesignComponent } from '@tempad-dev/plugins'
+import { h } from '../utils'
 
-const SkeletonTypeMap: Record<string, string | undefined> = {
-  Generic: 'generic',
+// eslint-disable-next-line ts/no-empty-object-type
+export type SkeletonProperties = {}
+
+const skeletonTypeMap = {
+  Generic: '',
   Card: 'card',
   Form: 'form',
   Table: 'table',
-}
+} as const
 
 const NAME_RE = 'Skeleton Loader/(.*)'
 
-export function Skeleton(component: DesignComponent): DevComponent {
+export function Skeleton(component: DesignComponent<SkeletonProperties>) {
   const [, name] = component.name.match(NAME_RE) || []
-  const type = (name && SkeletonTypeMap[name]) || 'generic'
+  const type =
+    name in skeletonTypeMap
+      ? skeletonTypeMap[name as keyof typeof skeletonTypeMap]
+      : undefined
 
-  return h('KSkeleton', {
-    type: type !== 'generic' ? type : undefined,
-  })
+  return h(
+    'KSkeleton',
+    {
+      type,
+    },
+    {
+      type: '',
+    },
+  )
 }
