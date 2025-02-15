@@ -19,6 +19,7 @@ export type InputFieldProperties = {
 
 export type HelpTextProperties = {
   Text: string
+  Type: 'Info' | 'Danger'
 }
 
 export type InputFieldProps = {
@@ -48,6 +49,7 @@ export function getInputFieldProps<T extends KeyMapping = {}>(
   )
 
   let help: string | undefined
+  let errorMessage: string | undefined
   let label: DevComponent<LabelProps> | undefined
 
   const labelNode = findOne<DesignComponent<LabelProperties>>(component, {
@@ -67,8 +69,12 @@ export function getInputFieldProps<T extends KeyMapping = {}>(
   })
 
   if (showHelpText && helpTextNode) {
-    const { text } = cleanPropNames(helpTextNode.properties)
-    help = text
+    const { text, type } = cleanPropNames(helpTextNode.properties)
+    if (type === 'Danger') {
+      errorMessage = text
+    } else {
+      help = text
+    }
   }
 
   const { required, ...labelAttributes } = label ? label.props : {}
@@ -80,6 +86,7 @@ export function getInputFieldProps<T extends KeyMapping = {}>(
       required,
       help,
       error: state === 'Error',
+      errorMessage,
       disabled: state === 'Disabled',
     },
     {
